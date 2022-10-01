@@ -1,0 +1,115 @@
+.matrix {
+  margin: 2rem;
+
+  display: grid;
+  border: 1px solid var(--primary-300);
+  overflow: hidden;
+  clip-path: polygon(var(--size-m) 0%, 100% 0, 100% 100%, 0 100%, 0% var(--size-m));
+  position: relative;
+}
+
+.matrix__header {
+  background-color: var(--primary-300);
+  color: var(--gray-300); 
+  padding-inline: var(--size-l);
+  padding-block: var(--size-xs);
+}
+
+.matrix__buttons {
+  --cell-size: var(--size-xl);
+
+  display: grid;
+  grid-template-columns: repeat(var(--matrix-size), var(--cell-size));
+  margin: auto;
+  padding: var(--size-s);
+}
+
+.matrix__button {
+  align-content: center;
+  background: transparent;
+  border: 0;
+  color: var(--primary-300);
+  display: grid;
+  height: var(--cell-size);
+  padding: 0;
+  width: var(--cell-size);
+}
+
+.matrix__button--tip {
+  outline: 1px solid var(--primary-300);
+  outline-offset: -4px;
+}
+
+.matrix__button--highlight:not(.matrix__button--selected) {
+  animation: glow 1s infinite;
+  box-shadow:
+    0 0 10px 5px var(--secondary-900),
+    inset 0 0 0 1px var(--secondary-600),
+    inset 0 0 0 3px var(--bg-color),
+    inset 0 0 0 4px var(--secondary-600);
+  color: var(--secondary-600);
+}
+
+.matrix__button--selected {
+  animation: unglow .5s forwards;
+  color: var(--gray-100);
+}
+
+.matrix__button:hover::after,
+.matrix__button--scope::before {
+  background-color: var(--gray-300);
+  content: '';
+  display: block;
+  pointer-events: none;
+  position: absolute;
+  z-index: -2;
+}
+
+.matrix__button:hover::after {
+  background-color: var(--primary-600);
+  opacity: 0.6;
+  z-index: -1;
+}
+
+.matrix__scope-horizontal .matrix__button:hover::after,
+.matrix__scope-vertical .matrix__button--scope::before {
+  bottom: 0;
+  top: 0;
+  width: var(--cell-size);
+}
+
+.matrix__scope-vertical .matrix__button:hover::after,
+.matrix__scope-horizontal .matrix__button--scope::before {
+  height: var(--cell-size);
+  left: 0;
+  right: 0;
+}
+
+@keyframes glow {
+  50% {
+    box-shadow:
+      0 0 12px 8px var(--secondary-900),
+      inset 0 0 0 1px var(--secondary-600),
+      inset 0 0 0 3px var(--bg-color),
+      inset 0 0 0 4px var(--secondary-600);
+  };
+}
+
+@keyframes unglow {
+  0% {
+    box-shadow:
+      inset 0 0 0 1px var(--secondary-600),
+      inset 0 0 0 3px var(--bg-color),
+      inset 0 0 0 4px var(--secondary-600),
+      inset 0 0 0 var(--cell-size) var(--secondary-600);
+    color: transparent;
+  }
+
+  50% {
+    color: transparent;
+  }
+
+  100% {
+    box-shadow: none;
+  }
+}

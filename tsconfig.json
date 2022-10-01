@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "preserve",
+    "jsxFactory": "jsx",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["src/*"],
+    }
+  },
+  "include": ["src", "jsx.d.ts"]
+}
