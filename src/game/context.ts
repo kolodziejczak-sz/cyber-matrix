@@ -1,6 +1,6 @@
-import { getMatrix } from './getMatrix';
-import { getSequences } from './getSequences';
-import { Context, GameSettings } from './types';
+import { Context, GameSettings } from '@/game/types';
+import { getMatrix } from '@/game/getMatrix';
+import { getSequences } from '@/game/getSequences';
 
 let context: Context;
 
@@ -13,7 +13,6 @@ export const getContext = (): Context => {
 };
 
 export const patchContext = (payload: Partial<Context>) => {
-
 }
 
 export const initContext = (settings: GameSettings) => {

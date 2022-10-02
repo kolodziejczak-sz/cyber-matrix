@@ -1,8 +1,8 @@
 import { effect } from '@/utils/effect';
-import { getNextDirection } from '@/utils/getNextDirection';
-import { getContext } from '@/context/context';
+import { getNextDirection } from '@/game/getNextDirection';
+import { getContext } from '@/game/context';
 import { createScope } from '@/components/Matrix/scope';
-import { findCell } from '@/components/Matrix//findCell';
+import { findCell } from '@/components/Matrix/findCell';
 
 import './Matrix.css';
 

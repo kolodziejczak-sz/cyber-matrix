@@ -1,5 +1,5 @@
 import { getRandomInteger } from '@/utils/getRandomInteger';
-import { Matrix } from '@/context/types';
+import { Matrix } from '@/game/types';
 
 const getUniqueSymbols = (symbolCount: number) => {
   const symbols = new Set<string>();

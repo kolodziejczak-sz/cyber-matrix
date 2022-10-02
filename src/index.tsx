@@ -1,5 +1,6 @@
 import { Matrix } from '@/components/Matrix';
-import { initContext, GameSettings } from '@/context';
+import { GameSettings } from '@/game/types';
+import { initContext } from '@/game/context';
 
 import './styles.css';
 

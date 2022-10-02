@@ -3,14 +3,11 @@ export type Matrix = {
   symbols: string[],
 };
 
-export type Buffor = string[];
-
 export type Direction = 'row' | 'column';
 
-export type Scope = {
-  index: number,
-  direction: Direction,
-};
+export type Scope = ScopeSettings;
+
+export type Buffor = string[];
 
 export type Sequences = {
   easy: string[],
@@ -18,13 +15,14 @@ export type Sequences = {
   hard: string[],
 };
 
-export type Timer =  {
-  duration: number
+export type ScopeSettings = {
+  index: number,
+  direction: Direction,
 };
 
-export type ScopeSettings = Scope;
-
-export type TimerSettings = Timer;
+export type TimerSettings = {
+  duration: number
+};
 
 export type MatrixSettings = { rowLength: number };
 
@@ -44,13 +42,12 @@ export type GameSettings = {
   sequencesSettings: SequencesSettings;
   bufforSettings: BufforSettings,
   timerSettings: TimerSettings;
-}
-
-export type Context = {
-  eventBus: EventTarget,
-  matrix: Matrix,
-  sequences: Sequences,
-  settings: GameSettings,
-  buffor: Buffor,
 };
 
+export type Context = {
+  matrix: Matrix,
+  sequences: Sequences,
+  buffor: Buffor,
+  eventBus: EventTarget,
+  settings: GameSettings,
+};

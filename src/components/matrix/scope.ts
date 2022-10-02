@@ -1,4 +1,4 @@
-import { Scope } from '@/context/types';
+import { Scope } from '@/game/types';
 import { effect } from '@/utils/effect';
 import { findCell } from '@/components/Matrix/findCell';
 
