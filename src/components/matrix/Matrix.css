@@ -1,6 +1,4 @@
 .matrix {
-  margin: 2rem;
-
   display: grid;
   border: 1px solid var(--primary-300);
   overflow: hidden;

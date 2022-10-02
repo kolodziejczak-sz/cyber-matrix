@@ -1,4 +1,4 @@
-import { Matrix } from '@/components/Matrix';
+import { App } from '@/components/App';
 import { GameSettings } from '@/game/types';
 import { initContext } from '@/game/context';
 
@@ -19,6 +19,5 @@ const gameSettings: GameSettings = {
 initContext(gameSettings);
 
 const root = document.getElementById('root');
-const app = <Matrix />;
 
-root.appendChild(app);
+root.appendChild(<App />);

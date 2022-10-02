@@ -6,7 +6,11 @@ import { findCell } from '@/components/Matrix/findCell';
 
 import './Matrix.css';
 
-export const Matrix = () => {
+type Props = {
+  className: string;
+}
+
+export const Matrix = ({ className }: Props) => {
   const context = getContext();
   const { matrix, settings: { scopeSettings } } = context;
   const { rowLength, symbols } = matrix;
@@ -95,7 +99,7 @@ export const Matrix = () => {
   };
 
   return (
-    <div class="matrix">
+    <div class={`matrix ${className}`}>
       <header class="matrix__header">Code Matrix</header>
       <div
         class="matrix__buttons"

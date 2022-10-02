@@ -1,0 +1,14 @@
+.app {
+  display: grid;
+  grid-template: 'matrix sequences';
+  margin: var(--size-l);
+  gap: var(--size-l);
+}
+
+.app__matrix {
+  grid-area: 'matrix';
+}
+
+.app__sequences {
+  grid-area: 'sequences',
+}
