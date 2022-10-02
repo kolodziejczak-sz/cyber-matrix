@@ -1,27 +1,24 @@
+import { Scope } from '@/context/types';
 import { effect } from '@/utils/effect';
 import { findCell } from './findCell';
 
-export type Scope = {
-  index: number,
-  direction: 'row' | 'column',
-}
+const cellClass = 'matrix__button--scope';
+const containerClasses = {
+  row: 'matrix__scope-horizontal',
+  column: 'matrix__scope-vertical'
+};
 
-export const getScope = (container: HTMLElement) => {
+export const createScope = (container: HTMLElement, initialScope: Scope) => {
   const cells = Array.from(container.children);
-  const cellClass = 'matrix__button--scope';
-  const containerClasses = {
-    row: 'matrix__scope-horizontal',
-    column: 'matrix__scope-vertical'
-  };
 
-  let scope: Scope | undefined;
+  let value = initialScope;
 
-  const getCurrentScope = (): Scope | undefined => {
-    return scope;
+  const getValue = (): Scope | undefined => {
+    return value;
   } 
 
   const moveTo = effect((nextScope: Scope) => {
-    scope = nextScope;
+    value = nextScope;
 
     const { direction, index } = nextScope;
 
@@ -37,8 +34,10 @@ export const getScope = (container: HTMLElement) => {
     };
   });
 
+  moveTo(initialScope);
+
   return {
     moveTo,
-    getCurrentScope,
+    getValue,
   };
 }

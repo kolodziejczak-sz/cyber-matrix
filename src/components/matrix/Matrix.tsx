@@ -1,25 +1,18 @@
-import { getScope } from './getScope';
-import { getSymbols } from './getSymbols';
-import { getSequences } from './getSequences';
+import { createScope } from './scope';
 import { findCell } from './findCell';
 import { effect } from '@/utils/effect';
+import { getContext } from '@/context/context';
+
 import './Matrix.css';
 
-// const state = {
-//   mode: 'row | column',
-//   selectionIndex: 0,
-//   isGameOver: false,
-//   buffor: [],
-// }
-
 export const Matrix = () => {
-  const { array, width } = getSymbols(5);
-  const abortController = new AbortController();
-  const signal = abortController.signal;
+  const context = getContext();
+  const { matrix, settings: { scopeSettings } } = context;
+  const { rowLength, symbols } = matrix;
 
-  const buttons = array.map((symbol, index) => {
-    const column = (index % width).toString();
-    const row = Math.floor(index / width).toString();
+  const buttons = symbols.map((symbol, index) => {
+    const column = (index % rowLength).toString();
+    const row = Math.floor(index / rowLength).toString();
 
     return (
       <button
@@ -33,35 +26,38 @@ export const Matrix = () => {
     );
   });
 
-
   const matrixHandler = (el: HTMLElement) => {
-    const scope = getScope(el);
+    const scope = createScope(el, scopeSettings);
 
-    scope.moveTo({ index: 0, direction: 'row' });
+    const getCellToHighlight = (event: MouseEvent) => {
+      const cell = event.target as HTMLButtonElement;
+      const { row, column } = cell.dataset;
+      const { direction, index } = scope.getValue();
 
-    getSequences(width, scope.getCurrentScope(), buttons);
+      return buttons.find(findCell, {
+        row: Number(row),
+        column: Number(column),
+        [direction]: index,
+      });
+    };
 
-    const handleClick = effect((event: MouseEvent) => {
+    const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (target.tagName !== 'BUTTON') {
         return;
       }
 
+      const { direction } = scope.getValue();
       const { row, column } = target.dataset;
-      const { direction, index } = scope.getCurrentScope();
-      const cellToSelect = buttons.find(findCell, {
-        row: Number(row),
-        column: Number(column),
-        [direction]: index
-      });
+      const highlightedCell = getCellToHighlight(event);
   
-      if (cellToSelect.hasAttribute('data-disabled')) {
+      if (highlightedCell.hasAttribute('data-disabled')) {
         return;
       }
   
-      cellToSelect.classList.add('matrix__button--selected');
-      cellToSelect.setAttribute('data-disabled', 'true');
-      cellToSelect.textContent = '[ ]';
+      highlightedCell.classList.add('matrix__button--selected');
+      highlightedCell.setAttribute('data-disabled', 'true');
+      highlightedCell.textContent = '[ ]';
 
       const nextDirection = direction === 'row' ? 'column' : 'row';
       const nextIndex = nextDirection === 'row' ? Number(row) : Number(column);
@@ -69,7 +65,7 @@ export const Matrix = () => {
       scope.moveTo({ direction: nextDirection, index: nextIndex });
 
       handleMouseOver(event);
-    });
+    };
 
     const handleMouseOver = effect((event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -78,20 +74,16 @@ export const Matrix = () => {
       }
 
       const className = 'matrix__button--highlight';
-      const { row, column } = target.dataset;
-      const { index, direction } = scope.getCurrentScope();
-      const cell = buttons.find(findCell, {
-        row: Number(row),
-        column: Number(column),
-        [direction]: index
-      });
-
-      cell.classList.add(className);
+      const cellToHighlight = getCellToHighlight(event);
+      cellToHighlight.classList.add(className);
 
       return () => {
-        cell.classList.remove(className);
+        cellToHighlight.classList.remove(className);
       };
     });
+
+    const abortController = new AbortController();
+    const signal = abortController.signal;
 
     el.addEventListener('mouseover', handleMouseOver, { signal });
     el.addEventListener('click', handleClick, { signal });
@@ -106,7 +98,7 @@ export const Matrix = () => {
       <header class="matrix__header">Code Matrix</header>
       <div
         class="matrix__buttons"
-        style={`--matrix-size:${width}`}
+        style={`--matrix-size:${rowLength}`}
         ref={matrixHandler}
       >
         {buttons}
