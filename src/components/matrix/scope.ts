@@ -1,6 +1,6 @@
 import { Scope } from '@/context/types';
 import { effect } from '@/utils/effect';
-import { findCell } from './findCell';
+import { findCell } from '@/components/Matrix/findCell';
 
 const cellClass = 'matrix__button--scope';
 const containerClasses = {

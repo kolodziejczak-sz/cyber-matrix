@@ -1,6 +1,6 @@
 import { getRandomInteger } from '@/utils/getRandomInteger';
 import { getNextDirection } from '@/utils/getNextDirection';
-import { Matrix, SequencesSettings, Sequences, ScopeSettings } from './types';
+import { Matrix, SequencesSettings, Sequences, ScopeSettings } from '@/context/types';
 
 export const getSequences = (
   sequencesSettings: SequencesSettings,

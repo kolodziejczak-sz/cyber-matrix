@@ -1,6 +1,6 @@
-import { Matrix } from './components/matrix/Matrix';
-import { getContext, initContext } from './context/context';
-import { GameSettings } from './context/types';
+import { Matrix } from '@/components/Matrix';
+import { initContext, GameSettings } from '@/context';
+
 import './styles.css';
 
 const gameSettings: GameSettings = {
@@ -16,8 +16,6 @@ const gameSettings: GameSettings = {
 };
 
 initContext(gameSettings);
-
-console.log(getContext());
 
 const root = document.getElementById('root');
 const app = <Matrix />;

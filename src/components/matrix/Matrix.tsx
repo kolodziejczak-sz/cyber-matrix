@@ -1,7 +1,8 @@
-import { createScope } from './scope';
-import { findCell } from './findCell';
 import { effect } from '@/utils/effect';
+import { getNextDirection } from '@/utils/getNextDirection';
 import { getContext } from '@/context/context';
+import { createScope } from '@/components/Matrix/scope';
+import { findCell } from '@/components/Matrix//findCell';
 
 import './Matrix.css';
 
@@ -59,7 +60,7 @@ export const Matrix = () => {
       highlightedCell.setAttribute('data-disabled', 'true');
       highlightedCell.textContent = '[ ]';
 
-      const nextDirection = direction === 'row' ? 'column' : 'row';
+      const nextDirection = getNextDirection(direction);
       const nextIndex = nextDirection === 'row' ? Number(row) : Number(column);
 
       scope.moveTo({ direction: nextDirection, index: nextIndex });
