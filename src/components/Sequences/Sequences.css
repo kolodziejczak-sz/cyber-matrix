@@ -1,6 +1,6 @@
 .sequences {
-  display: grid;
   font-size: var(--size-300);
+  color: var(--gray-200);
 }
 
 .sequences__list {
@@ -26,7 +26,6 @@
 
 .sequences__symbol {
   align-content: center;
-  color: var(--gray-100);
   display: inline-grid;
   height: var(--symbol-size);
   width: var(--symbol-size);

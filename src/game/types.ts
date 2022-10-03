@@ -7,7 +7,7 @@ export type Direction = 'row' | 'column';
 
 export type Scope = ScopeSettings;
 
-export type Buffor = string[];
+export type Buffer = string[];
 
 export type Sequence = { length: number, points: number, symbols: string[] }
 
@@ -24,7 +24,7 @@ export type TimerSettings = {
 
 export type MatrixSettings = { rowLength: number };
 
-export type BufforSettings = { length: number };
+export type BufferSettings = { length: number };
 
 export type SequenceSettings = { length: number, points: number };
 
@@ -34,14 +34,14 @@ export type GameSettings = {
   scopeSettings: ScopeSettings;
   matrixSettings: MatrixSettings;
   sequencesSettings: SequencesSettings;
-  bufforSettings: BufforSettings,
+  bufferSettings: BufferSettings,
   timerSettings: TimerSettings;
 };
 
 export type Context = {
   matrix: Matrix,
   sequences: Sequences,
-  buffor: Buffor,
+  buffer: Buffer,
   eventBus: EventTarget,
   settings: GameSettings,
 };

@@ -11,5 +11,5 @@
 }
 
 .app__sequences {
-  grid-area: 'sequences',
+  grid-area: 'sequences';
 }

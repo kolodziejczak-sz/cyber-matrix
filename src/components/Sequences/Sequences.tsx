@@ -1,4 +1,5 @@
 import { getContext } from '@/game/context';
+import { findCell } from '@/game/findCell';
 
 import './Sequences.css';
 
@@ -7,15 +8,16 @@ type Props = {
 }
 
 export const Sequences = ({ className }: Props) => {
-  const { sequences } = getContext();
-
-  const cells = [];
+  const { sequences, settings } = getContext();
+  const bufferLength = settings.bufferSettings.length;
 
   const longestSequence = Math.max(
+    bufferLength,
     ...sequences.map(({ length }) => length)
   );
 
-  const items = sequences.map(({ symbols, points }, rowIndex) => {
+  const cells: HTMLElement[] = [];
+  const rows = sequences.map(({ symbols, points }, rowIndex) => {
     return (
       <li class="sequences__item">
         {symbols.map((symbol, columnIndex) => {
@@ -41,8 +43,25 @@ export const Sequences = ({ className }: Props) => {
           </span>
         </div>
       </li>
-    )
-  })
+    );
+  });
+
+  const pushRow = (rowIndex: number) => {
+    const rowCells = cells.filter(findCell, { row: rowIndex });
+
+    rowCells.forEach(cell => {
+      const nextColumn = (Number(cell.dataset.column) + 1).toString()
+      cell.setAttribute('data-column', nextColumn);
+    });
+
+    rows[rowIndex].prepend(
+      <button
+        data-row={rowIndex.toString()}
+        data-column="0"
+        data-disabled="true"
+      />
+    );
+  };
 
   return (
     <div class={`sequences card ${className}`}>
@@ -50,7 +69,7 @@ export const Sequences = ({ className }: Props) => {
         Seuqence required to upload
       </div>
       <ul class="sequences__list" style={`--sequences-size:${longestSequence};`}>
-        {items}
+        {rows}
       </ul>
     </div>
   )

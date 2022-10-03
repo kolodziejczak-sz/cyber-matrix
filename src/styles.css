@@ -45,7 +45,8 @@ button {
   --secondary-600: #4bbde0;
   --secondary-900: #274650;
 
-  --gray-100: #a6a6a6;
+  --gray-100: #aaa;
+  --gray-200: #cacaca;
   --gray-300: #2a2c3c;
   --gray-600: #18172c;
   --gray-900: #130f1a;
