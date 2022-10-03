@@ -1,8 +1,9 @@
 .app {
+  align-items: start;
   display: grid;
   grid-template: 'matrix sequences';
-  margin: var(--size-l);
-  gap: var(--size-l);
+  margin: var(--size-600);
+  gap: var(--size-600);
 }
 
 .app__matrix {

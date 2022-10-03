@@ -1,44 +1,32 @@
 .matrix {
   display: grid;
-  border: 1px solid var(--primary-300);
   overflow: hidden;
-  clip-path: polygon(var(--size-m) 0%, 100% 0, 100% 100%, 0 100%, 0% var(--size-m));
   position: relative;
 }
 
-.matrix__header {
-  background-color: var(--primary-300);
-  color: var(--gray-300); 
-  padding-inline: var(--size-l);
-  padding-block: var(--size-xs);
-}
-
-.matrix__buttons {
-  --cell-size: var(--size-xl);
+.matrix__cells {
+  --cell-size: var(--size-700);
 
   display: grid;
   grid-template-columns: repeat(var(--matrix-size), var(--cell-size));
   margin: auto;
-  padding: var(--size-s);
+  padding: var(--size-200);
 }
 
-.matrix__button {
+.matrix__cell {
   align-content: center;
-  background: transparent;
-  border: 0;
   color: var(--primary-300);
-  display: grid;
+  display: inline-grid;
   height: var(--cell-size);
-  padding: 0;
   width: var(--cell-size);
 }
 
-.matrix__button--tip {
+.matrix__cell--tip {
   outline: 1px solid var(--primary-300);
   outline-offset: -4px;
 }
 
-.matrix__button--highlight:not(.matrix__button--selected) {
+.matrix__cell--highlight:not(.matrix__cell--selected) {
   animation: glow 1s infinite;
   box-shadow:
     0 0 10px 5px var(--secondary-900),
@@ -48,13 +36,13 @@
   color: var(--secondary-600);
 }
 
-.matrix__button--selected {
+.matrix__cell--selected {
   animation: unglow .5s forwards;
   color: var(--gray-100);
 }
 
-.matrix__button:hover::after,
-.matrix__button--scope::before {
+.matrix__cell:hover::after,
+.matrix__cell--scope::before {
   background-color: var(--gray-300);
   content: '';
   display: block;
@@ -63,21 +51,21 @@
   z-index: -2;
 }
 
-.matrix__button:hover::after {
+.matrix__cell:hover::after {
   background-color: var(--primary-600);
   opacity: 0.6;
   z-index: -1;
 }
 
-.matrix__scope-horizontal .matrix__button:hover::after,
-.matrix__scope-vertical .matrix__button--scope::before {
+.matrix__scope-horizontal .matrix__cell:hover::after,
+.matrix__scope-vertical .matrix__cell--scope::before {
   bottom: 0;
   top: 0;
   width: var(--cell-size);
 }
 
-.matrix__scope-vertical .matrix__button:hover::after,
-.matrix__scope-horizontal .matrix__button--scope::before {
+.matrix__scope-vertical .matrix__cell:hover::after,
+.matrix__scope-horizontal .matrix__cell--scope::before {
   height: var(--cell-size);
   left: 0;
   right: 0;

@@ -30,6 +30,12 @@ p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
+button {
+  background: inherit;
+  border: 0;
+  padding: 0;
+}
+
 :root {
   --primary-300: #d0ec58;
   --primary-600: #3a3f26;
@@ -46,11 +52,13 @@ p, h1, h2, h3, h4, h5, h6 {
 
   --light-300: #e4dfe8;
 
-  --size-xs: 0.25rem;
-  --size-s: 0.5rem;
-  --size-m: 1rem;
-  --size-l: 2rem;
-  --size-xl: 2.75rem;
+  --size-100: 0.25rem;
+  --size-200: 0.5rem;
+  --size-300: 0.75rem;
+  --size-400: 1rem;
+  --size-500: 1.5rem;
+  --size-600: 2rem;
+  --size-700: 2.75rem;
 }
 
 body {
@@ -64,7 +72,43 @@ body {
   word-spacing: .75ch;
 }
 
-
 #root {
   display: grid;
+}
+
+.card {
+  border: 1px solid var(--primary-300);
+  clip-path: polygon(
+    var(--size-400) 0%,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0% var(--size-400)
+  );
+  position: relative;
+}
+
+.card__header {
+  background-color: var(--primary-300);
+  border-bottom: 1px solid var(--primary-300);
+  color: var(--gray-300);
+  font-size: var(--size-300);
+  padding-block: var(--size-100);
+  padding-inline: var(--size-400);
+}
+
+.card__header--secondary {
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--primary-300);
+  color: var(--primary-300);
+}
+
+.card__header--secondary::before {
+  border-style: solid;
+  border-width: var(--size-400) var(--size-400) 0 0;
+  border-color: var(--primary-300) transparent;
+  content: '';
+  left: 0;
+  position: absolute;
+  top: 0;
 }

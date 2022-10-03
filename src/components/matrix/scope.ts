@@ -1,8 +1,8 @@
 import { Scope } from '@/game/types';
 import { effect } from '@/utils/effect';
-import { findCell } from '@/components/Matrix/findCell';
+import { findCell } from '@/game/findCell';
 
-const cellClass = 'matrix__button--scope';
+const cellClass = 'matrix__cell--scope';
 const containerClasses = {
   row: 'matrix__scope-horizontal',
   column: 'matrix__scope-vertical'

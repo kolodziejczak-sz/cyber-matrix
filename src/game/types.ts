@@ -9,11 +9,9 @@ export type Scope = ScopeSettings;
 
 export type Buffor = string[];
 
-export type Sequences = {
-  easy: string[],
-  medium: string[],
-  hard: string[],
-};
+export type Sequence = { length: number, points: number, symbols: string[] }
+
+export type Sequences = Sequence[];
 
 export type ScopeSettings = {
   index: number,
@@ -30,11 +28,7 @@ export type BufforSettings = { length: number };
 
 export type SequenceSettings = { length: number, points: number };
 
-export type SequencesSettings = {
-  easy: SequenceSettings,
-  medium: SequenceSettings,
-  hard: SequenceSettings,
-};
+export type SequencesSettings = SequenceSettings[];
 
 export type GameSettings = {
   scopeSettings: ScopeSettings;
