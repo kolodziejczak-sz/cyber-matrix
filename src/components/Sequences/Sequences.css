@@ -29,7 +29,7 @@
 }
 
 .sequences__value {
-  color: var(--text-color);
+  color: var(--primary-300);
   text-transform: lowercase;
 }
 
@@ -41,8 +41,8 @@
 }
 
 .sequences__cell:hover {
-  color: var(--text-color);
-  outline: 1px solid var(--text-color);
+  color: var(--primary-300);
+  outline: 1px solid var(--primary-300);
   outline-offset: -1px;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .sequences__cell--selected {
-  color: var(--text-color);
+  color: var(--primary-300);
 }
 
 .sequences__cell--scope::before {
