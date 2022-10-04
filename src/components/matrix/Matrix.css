@@ -21,7 +21,7 @@
   width: var(--cell-size);
 }
 
-.matrix__cell--tip {
+.matrix__cell--query {
   outline: 1px solid var(--primary-300);
   outline-offset: -4px;
 }

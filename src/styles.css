@@ -46,12 +46,11 @@ button {
   --secondary-900: #274650;
 
   --gray-100: #aaa;
-  --gray-200: #cacaca;
-  --gray-300: #2a2c3c;
+  --gray-200: #e4dfe8;
+  --gray-300: #222434;
+  --gray-400: #292a32;
   --gray-600: #18172c;
   --gray-900: #130f1a;
-
-  --light-300: #e4dfe8;
 
   --size-100: 0.25rem;
   --size-200: 0.5rem;

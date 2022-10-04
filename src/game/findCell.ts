@@ -11,7 +11,11 @@ export function findCell (this: FindCellQuery, element: HTMLElement): boolean {
     symbol: targetSymbol,
   } = this;
 
-  const { row, column, symbol } = element.dataset;
+  const { row, column, symbol, disabled } = element.dataset;
+
+  if (disabled) {
+    return false;
+  }
 
   return (targetRow === undefined ? true : targetRow === Number(row))
     && (targetColumn === undefined ? true : targetColumn === Number(column))

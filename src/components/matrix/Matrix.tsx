@@ -1,4 +1,5 @@
 import { effect } from '@/utils/effect';
+import { classListEffect } from '@/utils/classListEffect';
 import { getNextDirection } from '@/game/getNextDirection';
 import { getContext } from '@/game/context';
 import { createScope } from '@/components/Matrix/scope';
@@ -37,6 +38,8 @@ export const Matrix = ({ className }: Props) => {
       const { direction, index } = scope.getValue();
       const { row, column } = (event.target as HTMLElement).dataset;
 
+      if (!row && !column) return;
+
       return cells.find(findCell, {
         row: Number(row),
         column: Number(column),
@@ -67,28 +70,32 @@ export const Matrix = ({ className }: Props) => {
 
       scope.moveTo({ direction: nextDirection, index: nextIndex });
 
-      const matrixSelectedEvent = new CustomEvent('matrix-selected', { detail: highlightedCell.dataset });
+      const matrixSelectedEvent = new CustomEvent('cell-select', { detail: highlightedCell.dataset });
       eventBus.dispatchEvent(matrixSelectedEvent);
 
       handleMouseOver(event);
     };
 
     const handleMouseOver = effect((event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (target.tagName !== 'BUTTON') {
-        return;
-      }
-
       const className = 'matrix__cell--highlight';
       const cellToHighlight = getCellToHighlight(event);
-      cellToHighlight.classList.add(className);
-
-      const matrixHighlightEvent = new CustomEvent('matrix-highlight', { detail: cellToHighlight.dataset });
+  
+      const matrixHighlightEvent = new CustomEvent('cell-highlight', { detail: cellToHighlight?.dataset });
       eventBus.dispatchEvent(matrixHighlightEvent);
+  
+      if (!cellToHighlight) return;
+  
+      return classListEffect(className, cellToHighlight);
+    });
 
-      return () => {
-        cellToHighlight.classList.remove(className);
-      };
+    const handleSymbolSearch = effect((event: CustomEvent) => {
+      const className = 'matrix__cell--query';
+      const symbol = event.detail;
+      if (!symbol) return;
+
+      const cellsToShow = cells.filter(findCell, { symbol });
+
+      return classListEffect(className, cellsToShow);
     });
 
     const abortController = new AbortController();
@@ -96,6 +103,7 @@ export const Matrix = ({ className }: Props) => {
 
     el.addEventListener('mouseover', handleMouseOver, { signal });
     el.addEventListener('click', handleClick, { signal });
+    eventBus.addEventListener('symbol-search', handleSymbolSearch, { signal });
 
     return () => {
       abortController.abort();
