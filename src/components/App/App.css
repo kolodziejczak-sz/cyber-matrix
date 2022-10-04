@@ -2,14 +2,18 @@
   align-items: start;
   display: grid;
   grid-template:
-    'timer timer'
+    'timer buffer'
     'matrix sequences';
-  margin: var(--size-600);
-  gap: var(--size-600);
+  margin: var(--size-700);
+  gap: var(--size-500);
 }
 
 .app__timer {
   grid-area: timer;
+}
+
+.app__buffer {
+  grid-area: buffer;
 }
 
 .app__matrix {

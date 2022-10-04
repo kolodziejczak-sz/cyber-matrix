@@ -102,7 +102,7 @@ export const Matrix = ({ className }: Props) => {
       const symbol = event.detail;
       if (!symbol) return;
 
-      const cellsToShow = cells.filter(findCell, { symbol });
+      const cellsToShow = cells.filter(findCell, { symbol, disabled: false });
 
       return classListEffect(className, cellsToShow);
     });

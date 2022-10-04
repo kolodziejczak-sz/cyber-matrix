@@ -89,8 +89,8 @@ export const Sequences = ({ className }: Props) => {
      * Highlight a sequence symbol that is being currently highlighted in the matrix.
      */
     const handleMatrixCellHightlight = effect((event: CustomEvent) => {
-      const symbol = event.detail?.symbol;
-      if (!symbol) {
+      const { symbol, disabled } = event.detail || {};
+      if (!symbol || disabled) {
         return;
       }
 
@@ -104,7 +104,7 @@ export const Sequences = ({ className }: Props) => {
      * A cell in the matrix has been selected. Highlight a selected symbol in sequences.
      */
     const handleMatrixCellSelect = (event: CustomEvent) => {
-      const symbol = event.detail.symbol;
+      const symbol = event.detail;
 
       const className = 'sequences__cell--selected';
       const symbolsToHighlight = cells.filter(findCell, { symbol, column: scopeIndex });

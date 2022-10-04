@@ -41,7 +41,8 @@ export const Timer = ({ className }: Props) => {
         time.textContent = getTimeText(duration);
 
         if (duration === 0) {
-          eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'timer' }));
+          stopTimer();
+          // eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'timer' }));
         }
       }, intervalMs);
     };
