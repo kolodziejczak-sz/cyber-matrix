@@ -14,14 +14,16 @@ export const getSequences = (
 
   return sequencesSettings.map<Sequence>(({ length, points }) => {
     let dir = direction;
+    let idx = index;
     const sequenceSymbols: string[] = [];
 
     for (let i = 0; i < length; i++) {
-      const query = { row: getCoord(), column: getCoord(), [dir]: index };
-      const symbolIndex = (query.column * rowLength) + query.row;
+      const query = { row: getCoord(), column: getCoord(), [dir]: idx };
+      const symbolIndex = (query.row * rowLength) + query.column;
 
-      sequenceSymbols.push(symbols[symbolIndex]);  
+      sequenceSymbols.push(symbols[symbolIndex]);
       dir = getNextDirection(dir);
+      idx = query[dir];
     }
 
     return {
