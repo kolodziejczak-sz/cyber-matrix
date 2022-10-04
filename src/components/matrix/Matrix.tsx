@@ -12,6 +12,10 @@ type Props = {
 }
 
 export const Matrix = ({ className }: Props) => {
+  const selectedClass = 'matrix__cell--selected';
+  const highlightClass = 'matrix__cell--highlight';
+  const queryClass = 'matrix__cell--query';
+
   const { eventBus, matrix, settings: { scopeSettings } } = getContext();
   const { rowLength, symbols } = matrix;
 
@@ -64,7 +68,7 @@ export const Matrix = ({ className }: Props) => {
         return;
       }
   
-      highlightedCell.classList.add('matrix__cell--selected');
+      highlightedCell.classList.add(selectedClass);
       highlightedCell.setAttribute('data-disabled', 'true');
       highlightedCell.textContent = '[ ]';
 
@@ -83,7 +87,6 @@ export const Matrix = ({ className }: Props) => {
      * A user hovers over a symbol in the matrix. Highlight a cell in range of the scope.
      */
     const handleMouseOver = effect((event: MouseEvent) => {
-      const className = 'matrix__cell--highlight';
       const cellToHighlight = getCellToHighlight(event);
   
       const matrixHighlightEvent = new CustomEvent('cell-highlight', { detail: cellToHighlight?.dataset });
@@ -91,20 +94,19 @@ export const Matrix = ({ className }: Props) => {
   
       if (!cellToHighlight) return;
   
-      return classListEffect(className, cellToHighlight);
+      return classListEffect(highlightClass, cellToHighlight);
     });
 
     /**
      * A user hovers over a symbol in a sequence. Highlight all cells containing the symbol.
      */
     const handleSymbolSearch = effect((event: CustomEvent) => {
-      const className = 'matrix__cell--query';
       const symbol = event.detail;
       if (!symbol) return;
 
       const cellsToShow = cells.filter(findCell, { symbol, disabled: false });
 
-      return classListEffect(className, cellsToShow);
+      return classListEffect(queryClass, cellsToShow);
     });
 
     const abortController = new AbortController();

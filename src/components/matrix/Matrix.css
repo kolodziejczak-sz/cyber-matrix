@@ -16,6 +16,7 @@
 .matrix__cell {
   align-content: center;
   color: var(--primary-300);
+  font-size: var(--size-400);
   display: inline-grid;
   height: var(--cell-size);
   width: var(--cell-size);

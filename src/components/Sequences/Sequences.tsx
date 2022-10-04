@@ -10,6 +10,10 @@ type Props = {
 }
 
 export const Sequences = ({ className }: Props) => {
+  const selectedClass = 'sequences__cell--selected';
+  const highlightClass = 'sequences__cell--highlight';
+  const cursorClass = 'sequences__cell--cursor';
+
   const { sequences, eventBus, settings } = getContext();
 
   const cells: HTMLElement[] = [];
@@ -42,16 +46,16 @@ export const Sequences = ({ className }: Props) => {
     );
   });
 
-  let scopeIndex;
+  let sequenceCursor = -1;
 
-  const pushScope = effect((columnIndex: number) => {
-    scopeIndex = columnIndex;
+  const pushScopeCursor = effect(() => {
+    const nextCursor = Math.min(bufferLength, sequenceCursor + 1);
+    sequenceCursor = nextCursor;
 
-    const className = 'sequences__cell--scope';
-    const cell = cells.find(findCell, { column: columnIndex });
+    const cell = cells.find(findCell, { column: nextCursor });
 
     if (cell) {
-      return classListEffect(className, cell);
+      return classListEffect(cursorClass, cell);
     }
   });
 
@@ -96,33 +100,30 @@ export const Sequences = ({ className }: Props) => {
         return;
       }
 
-      const className = 'sequences__cell--highlight';
-      const symbolsToHighlight = cells.filter(findCell, { symbol, column: scopeIndex });
+      const symbolsToHighlight = cells.filter(findCell, { symbol, column: sequenceCursor });
 
-      return classListEffect(className, symbolsToHighlight);
+      return classListEffect(highlightClass, symbolsToHighlight);
     });
 
     /**
      * A cell in the matrix has been selected. Highlight a selected symbol in sequences.
      */
     const handleMatrixCellSelect = (event: CustomEvent) => {
-      const symbol = event.detail;
-
-      const className = 'sequences__cell--selected';
-      const symbolsToHighlight = cells.filter(findCell, { symbol, column: scopeIndex });
+      const { symbol } = event.detail;
+      const symbolsToHighlight = cells.filter(findCell, { symbol, column: sequenceCursor });
 
       symbolsToHighlight.forEach(el => {
         const { row, column } = el.dataset;
 
         // might be unnecessary, cuz the sequence might already failed
         const prevSymbol = cells.find(findCell, { column: Number(column) - 1, row: Number(row) });
-        if (!prevSymbol || prevSymbol.classList.contains(className)) {
-          el.classList.add(className)
+        if (!prevSymbol || prevSymbol.classList.contains(selectedClass)) {
+          el.classList.add(selectedClass)
         }
       });
 
       // pushRow - wait for buffer?
-      pushScope(Math.min(bufferLength, scopeIndex + 1));
+      pushScopeCursor();
     };
 
     el.addEventListener('mouseover', handleMouseOver, { signal });
@@ -144,7 +145,7 @@ export const Sequences = ({ className }: Props) => {
     ...sequences.map(({ length }) => length)
   );
 
-  pushScope(0);
+  pushScopeCursor();
 
 
   return (

@@ -47,15 +47,15 @@
 }
 
 .sequences__cell--highlight {
-  box-shadow: 0 0 6px 2px var(--secondary-300);
-  color: var(--secondary-300);
+  box-shadow: 0 0 6px 2px var(--secondary-600);
+  color: var(--secondary-600);
 }
 
 .sequences__cell--selected {
   color: var(--primary-300);
 }
 
-.sequences__cell--scope::before {
+.sequences__cell--cursor::before {
   content: '';
   position: absolute;
   background: var(--gray-400);

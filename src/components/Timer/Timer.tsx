@@ -20,7 +20,7 @@ export const Timer = ({ className }: Props) => {
   };
 
   const time = <div class="timer__time">{getTimeText(duration)}</div>;
-  const animation = <div class="timer__animation" />;
+  const animation = <div class="timer__animation" style={`--timer-duration:${duration}ms`} />;
 
   const handleTimer = () => {
     const abortController = new AbortController();
@@ -50,8 +50,10 @@ export const Timer = ({ className }: Props) => {
     /** A user selected any cell. The timer starts. */
     eventBus.addEventListener('cell-select', startTime, { signal, once: true });
     /** Game ended. Send the status. */
-    eventBus.addEventListener('game-end', () => {
+    eventBus.addEventListener('game-end', () => {  
       eventBus.dispatchEvent(new CustomEvent('timer-status', { detail: duration }));
+
+      stopTimer();
       abortController.abort();
      }, { signal, once: true });
 
@@ -64,7 +66,6 @@ export const Timer = ({ className }: Props) => {
   return (
     <div 
       class={`${className} timer`}
-      style={`--timer-duration:${duration}ms`}
       ref={handleTimer}
     >
       <div>Breach time remaining</div>

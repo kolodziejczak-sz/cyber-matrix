@@ -1,6 +1,8 @@
 .timer {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: var(--size-100);
+  position: relative;
 }
 
 .timer__time {
@@ -21,7 +23,18 @@
   grid-column: 1 / -1;
   height: var(--size-100);
   background-color: currentColor;
-  margin-block-start: var(--size-100);
+  margin-block-start: var(--size-200);
+}
+
+.timer__animation::before {
+  bottom: 0;
+  content: '';
+  height: var(--size-100);
+  left: 0;
+  outline: 1px solid currentColor;
+  position: absolute;
+  right: 0;
+  width: 100%;
 }
 
 @keyframes timer {

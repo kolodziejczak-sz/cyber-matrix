@@ -14,6 +14,7 @@
 
 .app__buffer {
   grid-area: buffer;
+  margin-block-start: calc(-1 * var(--size-500));
 }
 
 .app__matrix {
