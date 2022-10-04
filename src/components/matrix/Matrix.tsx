@@ -47,6 +47,9 @@ export const Matrix = ({ className }: Props) => {
       });
     };
 
+    /**
+     * A user clicked a symbol in the matrix. Select a highlighted cell.
+     */
     const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (target.tagName !== 'BUTTON') {
@@ -76,6 +79,9 @@ export const Matrix = ({ className }: Props) => {
       handleMouseOver(event);
     };
 
+    /**
+     * A user hovers over a symbol in the matrix. Highlight a cell in range of the scope.
+     */
     const handleMouseOver = effect((event: MouseEvent) => {
       const className = 'matrix__cell--highlight';
       const cellToHighlight = getCellToHighlight(event);
@@ -88,6 +94,9 @@ export const Matrix = ({ className }: Props) => {
       return classListEffect(className, cellToHighlight);
     });
 
+    /**
+     * A user hovers over a symbol in a sequence. Highlight all cells containing the symbol.
+     */
     const handleSymbolSearch = effect((event: CustomEvent) => {
       const className = 'matrix__cell--query';
       const symbol = event.detail;
@@ -104,6 +113,7 @@ export const Matrix = ({ className }: Props) => {
     el.addEventListener('mouseover', handleMouseOver, { signal });
     el.addEventListener('click', handleClick, { signal });
     eventBus.addEventListener('symbol-search', handleSymbolSearch, { signal });
+    eventBus.addEventListener('game-end', () => abortController.abort(), { signal, once: true });
 
     return () => {
       abortController.abort();
@@ -111,7 +121,7 @@ export const Matrix = ({ className }: Props) => {
   };
 
   return (
-    <div class={`matrix card ${className}`}>
+    <div class={`${className} matrix card`}>
       <header class="card__header">Code Matrix</header>
       <div
         class="matrix__cells"

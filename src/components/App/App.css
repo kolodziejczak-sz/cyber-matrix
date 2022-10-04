@@ -1,15 +1,21 @@
 .app {
   align-items: start;
   display: grid;
-  grid-template: 'matrix sequences';
+  grid-template:
+    'timer timer'
+    'matrix sequences';
   margin: var(--size-600);
   gap: var(--size-600);
 }
 
+.app__timer {
+  grid-area: timer;
+}
+
 .app__matrix {
-  grid-area: 'matrix';
+  grid-area: matrix;
 }
 
 .app__sequences {
-  grid-area: 'sequences';
+  grid-area: sequences;
 }

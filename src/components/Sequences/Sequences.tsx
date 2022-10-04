@@ -74,6 +74,9 @@ export const Sequences = ({ className }: Props) => {
     const abortController = new AbortController();
     const signal = abortController.signal;
 
+    /**
+     * Request the matrix to highlight a symbol currently selected by a user.
+     */
     const handleMouseOver = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const symbol = target.dataset.symbol;
@@ -82,6 +85,9 @@ export const Sequences = ({ className }: Props) => {
       eventBus.dispatchEvent(symbolSearchEvent);
     };
 
+    /**
+     * Highlight a sequence symbol that is being currently highlighted in the matrix.
+     */
     const handleMatrixCellHightlight = effect((event: CustomEvent) => {
       const symbol = event.detail?.symbol;
       if (!symbol) {
@@ -94,21 +100,33 @@ export const Sequences = ({ className }: Props) => {
       return classListEffect(className, symbolsToHighlight);
     });
 
+    /**
+     * A cell in the matrix has been selected. Highlight a selected symbol in sequences.
+     */
     const handleMatrixCellSelect = (event: CustomEvent) => {
       const symbol = event.detail.symbol;
 
       const className = 'sequences__cell--selected';
       const symbolsToHighlight = cells.filter(findCell, { symbol, column: scopeIndex });
 
-      symbolsToHighlight.forEach(el => el.classList.add(className));
+      symbolsToHighlight.forEach(el => {
+        const { row, column } = el.dataset;
 
-      // pushRow
+        // might be unnecessary, cuz the sequence might already failed
+        const prevSymbol = cells.find(findCell, { column: Number(column) - 1, row: Number(row) });
+        if (!prevSymbol || prevSymbol.classList.contains(className)) {
+          el.classList.add(className)
+        }
+      });
+
+      // pushRow - wait for buffer?
       pushScope(scopeIndex + 1);
     };
 
     el.addEventListener('mouseover', handleMouseOver, { signal });
     eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
     eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
+    eventBus.addEventListener('game-end', () => abortController.abort(), { signal, once: true });
 
     return () => {
       abortController.abort();
@@ -125,7 +143,7 @@ export const Sequences = ({ className }: Props) => {
 
 
   return (
-    <div class={`sequences card ${className}`}>
+    <div class={`${className} sequences card`}>
       <div class="card__header card__header--secondary">
         Seuqence required to upload
       </div>

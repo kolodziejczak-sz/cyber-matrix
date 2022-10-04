@@ -13,7 +13,7 @@ const gameSettings: GameSettings = {
     { length: 4, points: 400, },
   ],
   bufferSettings: { length: 5 },
-  timerSettings: { duration: 30_000 },
+  timerSettings: { duration: 12_600 },
 };
 
 initContext(gameSettings);

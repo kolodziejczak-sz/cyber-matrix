@@ -1,0 +1,33 @@
+.timer {
+  color: var(--primary-300);
+  font-size: var(--size-300);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.timer__time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid currentColor;
+  margin-inline-start: auto;
+  width: var(--size-700);
+  height: var(--size-500);
+}
+
+.timer__animation {
+  animation: timer linear forwards;
+  animation-duration: var(--timer-duration);
+  animation-play-state: paused;
+
+  grid-column: 1 / -1;
+  height: var(--size-100);
+  background-color: currentColor;
+  margin-block-start: var(--size-100);
+}
+
+@keyframes timer {
+  0% { width: 100% }
+  100% { width: 0% }
+}
+
