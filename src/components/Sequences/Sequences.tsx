@@ -50,7 +50,9 @@ export const Sequences = ({ className }: Props) => {
     const className = 'sequences__cell--scope';
     const cell = cells.find(findCell, { column: columnIndex });
 
-    return classListEffect(className, cell);
+    if (cell) {
+      return classListEffect(className, cell);
+    }
   });
 
   const pushRow = (rowIndex: number) => {
@@ -126,7 +128,10 @@ export const Sequences = ({ className }: Props) => {
     el.addEventListener('mouseover', handleMouseOver, { signal });
     eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
     eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
-    eventBus.addEventListener('game-end', () => abortController.abort(), { signal, once: true });
+    /** Game ended. Send the status. */
+    eventBus.addEventListener('game-end', () => {
+      abortController.abort();
+    },  { signal, once: true });
 
     return () => {
       abortController.abort();

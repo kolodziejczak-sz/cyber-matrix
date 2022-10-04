@@ -1,6 +1,4 @@
 .timer {
-  color: var(--primary-300);
-  font-size: var(--size-300);
   display: grid;
   grid-template-columns: 1fr 1fr;
 }

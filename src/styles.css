@@ -63,11 +63,12 @@ button {
 
 body {
   --bg-color: var(--gray-900);
-  --text-color: var(--light-300);
+  --text-color: var(--primary-300);
 
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: var(--size-300);
   text-transform: uppercase;
   word-spacing: .75ch;
 }
@@ -77,7 +78,7 @@ body {
 }
 
 .card {
-  border: 1px solid var(--primary-300);
+  border: 1px solid var(--text-color);
   clip-path: polygon(
     var(--size-400) 0%,
     100% 0,
@@ -89,24 +90,23 @@ body {
 }
 
 .card__header {
-  background-color: var(--primary-300);
-  border-bottom: 1px solid var(--primary-300);
+  background-color: var(--text-color);
+  border-bottom: 1px solid var(--text-color);
   color: var(--gray-300);
-  font-size: var(--size-300);
   padding-block: var(--size-100);
   padding-inline: var(--size-400);
 }
 
 .card__header--secondary {
   background-color: var(--bg-color);
-  border-bottom: 1px solid var(--primary-300);
-  color: var(--primary-300);
+  border-bottom: 1px solid var(--text-color);
+  color: var(--text-color);
 }
 
 .card__header--secondary::before {
   border-style: solid;
   border-width: var(--size-400) var(--size-400) 0 0;
-  border-color: var(--primary-300) transparent;
+  border-color: var(--text-color) transparent;
   content: '';
   left: 0;
   position: absolute;

@@ -15,14 +15,14 @@
 
 .matrix__cell {
   align-content: center;
-  color: var(--primary-300);
+  color: var(--text-color);
   display: inline-grid;
   height: var(--cell-size);
   width: var(--cell-size);
 }
 
 .matrix__cell--query {
-  outline: 1px solid var(--primary-300);
+  outline: 1px solid var(--text-color);
   outline-offset: -4px;
 }
 

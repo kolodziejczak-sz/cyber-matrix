@@ -13,7 +13,11 @@ export const Buffer = ({ className }: Props) => {
     const abortController = new AbortController();
     const signal = abortController.signal;
 
-    eventBus.addEventListener('game-end', () => abortController.abort(), { signal, once: true });
+    /** Game ended. Send the status */
+    eventBus.addEventListener('game-end', () => {
+      abortController.abort();
+
+    }, { signal, once: true });
 
     return () => {
       abortController.abort();
