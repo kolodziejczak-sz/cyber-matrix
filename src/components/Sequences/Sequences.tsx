@@ -15,6 +15,14 @@ export const Sequences = ({ className }: Props) => {
   const cursorClass = 'sequences__cell--cursor';
 
   const { sequences, eventBus, settings } = getContext();
+  const bufferLength = settings.bufferSettings.length;
+  const longestSequence = Math.max(
+    bufferLength, ...sequences.map(({ length }) => length)
+  );
+
+  const selectedMatrixSymbols = [];
+  const sequencesStatus = sequences.map(() => undefined);
+  let sequenceCursor = -1;
 
   const cells: HTMLElement[] = [];
   const rows = sequences.map(({ symbols, points }, rowIndex) => {
@@ -46,8 +54,6 @@ export const Sequences = ({ className }: Props) => {
     );
   });
 
-  let sequenceCursor = -1;
-
   const pushScopeCursor = effect(() => {
     const nextCursor = Math.min(bufferLength, sequenceCursor + 1);
     sequenceCursor = nextCursor;
@@ -67,13 +73,16 @@ export const Sequences = ({ className }: Props) => {
       cell.setAttribute('data-column', nextColumn);
     });
 
-    rows[rowIndex].prepend(
+    const emptyCell = (
       <button
         data-row={rowIndex.toString()}
         data-column="0"
         data-disabled="true"
       />
     );
+
+    rows[rowIndex].prepend(emptyCell);
+    cells.push(emptyCell);
   };
 
   const listHandler = (el) => {
@@ -106,30 +115,46 @@ export const Sequences = ({ className }: Props) => {
     });
 
     /**
-     * A cell in the matrix has been selected. Highlight a selected symbol in sequences.
+     * A cell in the matrix has been selected.
+     * Check if any sequence failed or succeed,
+     * highlight a selected symbol in sequences,
+     * move the cursor and rows if possible.
      */
     const handleMatrixCellSelect = (event: CustomEvent) => {
       const { symbol } = event.detail;
-      const symbolsToHighlight = cells.filter(findCell, { symbol, column: sequenceCursor });
-
-      symbolsToHighlight.forEach(el => {
-        const { row, column } = el.dataset;
-
-        // might be unnecessary, cuz the sequence might already failed
-        const prevSymbol = cells.find(findCell, { column: Number(column) - 1, row: Number(row) });
-        if (!prevSymbol || prevSymbol.classList.contains(selectedClass)) {
-          el.classList.add(selectedClass)
+      selectedMatrixSymbols.push(symbol);
+      const cursorCells = cells.filter(findCell, { column: sequenceCursor });
+  
+      cursorCells.forEach((cell, rowIndex) => {
+        const prevCell = cells.find(findCell, { row: rowIndex, column: sequenceCursor - 1 });
+        const prevCellIsDisabled = Boolean(prevCell && prevCell.dataset.disabled);
+        const prevCellIsSelected = Boolean(prevCell && prevCell.classList.contains(selectedClass))
+        const isSelectable = !prevCell || prevCellIsDisabled || prevCellIsSelected;
+  
+        // f3 d0 - sequence
+        // f3 f3 - sequence
+        // TODO: check first if any sequence succeed
+        if (isSelectable && cell.dataset.symbol === symbol) {
+          cell.classList.add(selectedClass);
+        } else {
+          const rowCells = cells.filter(findCell, { row: rowIndex });
+          // TODO: do not move ended sequences
+          const isMovable = prevCell?.dataset.symbol === cell.dataset.symbol || !prevCellIsSelected;
+          if (isMovable && (bufferLength > rowCells.length)) {
+            pushRow(rowIndex);
+          } else {
+            console.log('failed?', { cell, rowIndex, prevCell, prevCellIsSelected });
+            // TODO: Failed?
+          }
         }
       });
 
-      // pushRow - wait for buffer?
       pushScopeCursor();
     };
 
     el.addEventListener('mouseover', handleMouseOver, { signal });
     eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
     eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
-    /** Game ended. Send the status. */
     eventBus.addEventListener('game-end', () => {
       abortController.abort();
     },  { signal, once: true });
@@ -138,12 +163,6 @@ export const Sequences = ({ className }: Props) => {
       abortController.abort();
     };
   }
-
-  const bufferLength = settings.bufferSettings.length;
-  const longestSequence = Math.max(
-    bufferLength,
-    ...sequences.map(({ length }) => length)
-  );
 
   pushScopeCursor();
 

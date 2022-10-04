@@ -16,12 +16,11 @@ export const Buffer = ({ className }: Props) => {
 
   const { eventBus, settings } = getContext();
   const { bufferSettings: { length } } = settings;
+  let bufferCursor = -1;
 
   const bufferCells = Array.from({ length }).map(() => {
     return <span class="buffer__cell" />
   });
-
-  let bufferCursor = -1;
 
   const pushBufferCursor = effect(() => {
     const nextCursor = bufferCursor + 1;
