@@ -47,6 +47,7 @@ export const Timer = ({ className }: Props) => {
       }, intervalMs);
     };
 
+    /** A user selected any cell. The timer starts. */
     eventBus.addEventListener('cell-select', startTime, { signal, once: true });
     eventBus.addEventListener('game-end', () => abortController.abort(), { signal, once: true });
 

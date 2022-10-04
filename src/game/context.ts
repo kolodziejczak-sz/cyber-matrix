@@ -21,11 +21,11 @@ export const initContext = (settings: GameSettings) => {
   const eventBus = new EventTarget();
   const matrix = getMatrix(matrixSettings.rowLength); 
   const sequences = getSequences(sequencesSettings, scopeSettings, matrix);
-  const buffor = [];
+  const buffer = [];
 
   context = {
     sequences,
-    buffor,
+    buffer,
     settings,
     eventBus,
     matrix,

@@ -120,7 +120,7 @@ export const Sequences = ({ className }: Props) => {
       });
 
       // pushRow - wait for buffer?
-      pushScope(scopeIndex + 1);
+      pushScope(Math.min(bufferLength, scopeIndex + 1));
     };
 
     el.addEventListener('mouseover', handleMouseOver, { signal });
