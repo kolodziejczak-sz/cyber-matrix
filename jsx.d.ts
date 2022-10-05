@@ -13,7 +13,7 @@ declare namespace JSX {
   type Attributes = Partial<{
     class: string;
     style: string;
-    [key: string]: any;
+    [key: string]: string;
   }>;
 
   type IntrinsicElementMap = {
