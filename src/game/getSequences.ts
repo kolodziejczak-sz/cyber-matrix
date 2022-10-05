@@ -1,26 +1,42 @@
 import { getRandomInteger } from '@/utils/getRandomInteger';
 import { getNextDirection } from '@/game/getNextDirection';
-import { Matrix, Sequences, Sequence, SequencesSettings, ScopeSettings } from '@/game/types';
+import { Matrix, Sequences, Sequence, GameSettings, Direction } from '@/game/types';
 
 export const getSequences = (
-  sequencesSettings: SequencesSettings,
-  initialScope: ScopeSettings,
   matrix: Matrix,
+  settings: GameSettings,
 ): Sequences => {
-  const { rowLength, symbols } = matrix;
+  const { scopeSettings: initialScope, sequencesSettings, bufferSettings } = settings;
   const { direction, index } = initialScope;
+  const { length: bufferLength } = bufferSettings;
+  const { rowLength, symbols } = matrix;
 
-  const getCoord = () => getRandomInteger(0, rowLength - 1);
+  const getRandomCoord = () => getRandomInteger(0, rowLength - 1);
+  const getRandomDir = (initialDir: Direction, range: number) => {
+    const offset = getRandomInteger(0, range);
+    let dir = initialDir;
+    for (let i = 0; i < offset; i++) {
+      dir = getNextDirection(dir);
+    }
+    return dir;
+  };
 
   return sequencesSettings.map<Sequence>(({ length, points }) => {
-    let dir = direction;
-    let idx = index;
     const sequenceSymbols: string[] = [];
+    const usedIndexes: number[] = [];
+    const bufferMaxOffset = bufferLength - length;
+    let dir = !bufferMaxOffset ? direction : getRandomDir(direction, bufferMaxOffset);
+    let idx = !bufferMaxOffset ? index : getRandomCoord();
 
     for (let i = 0; i < length; i++) {
-      const query = { row: getCoord(), column: getCoord(), [dir]: idx };
-      const symbolIndex = (query.row * rowLength) + query.column;
+      let query, symbolIndex;
 
+      do {
+        query = { row: getRandomCoord(), column: getRandomCoord(), [dir]: idx };
+        symbolIndex = (query.row * rowLength) + query.column;
+      } while (usedIndexes.includes(symbolIndex))
+
+      usedIndexes.push(symbolIndex);
       sequenceSymbols.push(symbols[symbolIndex]);
       dir = getNextDirection(dir);
       idx = query[dir];
