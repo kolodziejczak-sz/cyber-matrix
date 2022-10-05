@@ -43,12 +43,7 @@ export const Matrix = ({ className }: Props) => {
   const view = (
     <div class={`${className} matrix card`}>
       <header class="card__header">Code Matrix</header>
-      <div
-        class="matrix__cells"
-        style={`--matrix-size:${rowLength}`}
-      >
-        {cells}
-      </div>
+      {cellsContainer}
     </div>
   );
 
@@ -110,7 +105,6 @@ export const Matrix = ({ className }: Props) => {
    */
   const handleMouseOver = effect((event: MouseEvent) => {
     const cellToHighlight = getCellToHighlight(event);
-
     const matrixHighlightEvent = new CustomEvent('cell-highlight', { detail: cellToHighlight?.dataset });
     eventBus.dispatchEvent(matrixHighlightEvent);
 

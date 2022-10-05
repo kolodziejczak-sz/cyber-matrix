@@ -109,16 +109,6 @@ export const Sequences = ({ className }: Props) => {
   };
 
   /**
-   * Check if given sequence succeed.
-   */
-  const isRowSucceed = (rowIndex: number) => {
-    const sequenceText = sequences[rowIndex].symbols.join('');
-    const bufferText = selectedMatrixSymbols.join('');
-
-    return bufferText.includes(sequenceText);
-  }
-
-  /**
    * Request the matrix to highlight a symbol currently selected by a user.
    */
   const handleMouseOver = (event: MouseEvent) => {
@@ -142,6 +132,31 @@ export const Sequences = ({ className }: Props) => {
   });
 
   /**
+   * Check if given sequence succeed.
+   */
+  const isRowSucceed = (rowIndex: number) => {
+    const sequenceText = sequences[rowIndex].symbols.join('');
+    const bufferText = selectedMatrixSymbols.join('');
+
+    return bufferText.includes(sequenceText);
+  };
+
+  /**
+   * Finish sequence and render feedback.
+   */
+  const finishSequence = (rowIndex: number, result: boolean) => {
+    sequencesStatus[rowIndex] = result;
+
+    const sequence = rows[rowIndex];
+    sequence.classList.add(result ? succeedClass : failedClass);
+    sequence.prepend(
+      <div class='sequences__status'>
+        {result ? 'Success' : 'Failed'}
+      </div>
+    );
+  };
+
+  /**
    * A cell in the matrix has been selected.
    * Check if any sequence failed or succeed,
    * highlight a selected symbol in sequences,
@@ -155,13 +170,13 @@ export const Sequences = ({ className }: Props) => {
 
     cursorCells.forEach((cell, rowIndex) => {
       const sequenceStatus = sequencesStatus[rowIndex];
-      const sequenceAlreadyDone = sequenceStatus !== undefined;
-      if (sequenceAlreadyDone) return;
+      const isSequenceAlreadyDone = sequenceStatus !== undefined;
+      if (isSequenceAlreadyDone) return;
 
       const prevCell = cells.find(findCell, { row: rowIndex, column: sequenceCursor - 1 });
-      const prevCellIsDisabled = Boolean(prevCell && prevCell.dataset.disabled);
-      const prevCellIsSelected = Boolean(prevCell && prevCell.classList.contains(selectedClass))
-      const isSelectable = !prevCell || prevCellIsDisabled || prevCellIsSelected;
+      const isPrevCellDisabled = Boolean(prevCell && prevCell.dataset.disabled);
+      const isPrevCellSelected = Boolean(prevCell && prevCell.classList.contains(selectedClass))
+      const isSelectable = !prevCell || isPrevCellDisabled || isPrevCellSelected;
 
       // f3 d0 - sequence
       // f3 f3 - sequence
@@ -170,18 +185,16 @@ export const Sequences = ({ className }: Props) => {
 
         const hasSequenceSucceed = isRowSucceed(rowIndex);
         if (hasSequenceSucceed) {
-          sequencesStatus[rowIndex] = true;
-          rows[rowIndex].classList.add(succeedClass);
+          finishSequence(rowIndex, true);
         }
       } else {
         const rowCells = cells.filter(findCell, { row: rowIndex });
-        const isMovable = prevCell?.dataset.symbol === cell.dataset.symbol || !prevCellIsSelected;
+        const isMovable = prevCell?.dataset.symbol === cell.dataset.symbol || !isPrevCellSelected;
         if (isMovable && (bufferLength > rowCells.length)) {
           pushRow(rowIndex);
         } else {
           // TODO: Failed?
-          sequencesStatus[rowIndex] = false;
-          rows[rowIndex].classList.add(failedClass);
+          finishSequence(rowIndex, false);
         }
       }
     });
@@ -190,6 +203,7 @@ export const Sequences = ({ className }: Props) => {
   };
 
   pushScopeCursor();
+  finishSequence(0, false)
 
   const abortController = new AbortController();
   const signal = abortController.signal;

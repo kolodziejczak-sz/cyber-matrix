@@ -12,15 +12,12 @@ export const getContext = (): Context => {
   return context;
 };
 
-export const patchContext = (payload: Partial<Context>) => {
-}
-
 export const initContext = (settings: GameSettings) => {
-  const { scopeSettings, matrixSettings, sequencesSettings } = settings;
+  const { matrixSettings } = settings;
 
   const eventBus = new EventTarget();
   const matrix = getMatrix(matrixSettings.rowLength); 
-  const sequences = getSequences(sequencesSettings, scopeSettings, matrix);
+  const sequences = getSequences(matrix, settings);
   const buffer = [];
 
   context = {
