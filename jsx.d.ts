@@ -11,7 +11,6 @@ declare namespace JSX {
   interface IntrinsicElements extends IntrinsicElementMap {}
 
   type Attributes = Partial<{
-    ref: (element: HTMLElement) => (() => void) | void;
     class: string;
     style: string;
     [key: string]: any;

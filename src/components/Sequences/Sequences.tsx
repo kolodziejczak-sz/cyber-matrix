@@ -10,50 +10,70 @@ type Props = {
 }
 
 export const Sequences = ({ className }: Props) => {
-  const selectedClass = 'sequences__cell--selected';
-  const highlightClass = 'sequences__cell--highlight';
-  const cursorClass = 'sequences__cell--cursor';
-
   const { sequences, eventBus, settings } = getContext();
   const bufferLength = settings.bufferSettings.length;
   const longestSequence = Math.max(
     bufferLength, ...sequences.map(({ length }) => length)
   );
 
+  const cells: HTMLElement[] = [];
+  const rows = sequences.map(({ symbols, points }, rowIndex) => (
+    <li class="sequences__item">
+      {symbols.map((symbol, columnIndex) => {
+        const cell = (
+          <button
+            class="sequences__cell"
+            data-row={rowIndex.toString()}
+            data-column={columnIndex.toString()}
+            data-symbol={symbol}
+          >
+            {symbol}
+          </button>
+        );
+
+        cells.push(cell);
+
+        return cell;
+      })}
+      <div class="sequences__details">
+        <span class="sequences__name">DATAMINE_V{rowIndex}</span>
+        <span class="sequences__value">
+          {points}points
+        </span>
+      </div>
+    </li>
+  ));
+
+  const list = (
+    <ul
+      class="sequences__list"
+      style={`--sequences-size:${longestSequence};`}
+    >
+      {rows}
+    </ul>
+  );
+
+  const view = (
+    <div class={`${className} sequences card`}>
+      <div class="card__header card__header--secondary">
+        Sequence required to upload
+      </div>
+      {list}
+    </div>
+  );
+
+  const selectedClass = 'sequences__cell--selected';
+  const highlightClass = 'sequences__cell--highlight';
+  const cursorClass = 'sequences__cell--cursor';
+  const succeedClass = 'sequences__item--success';
+  const failedClass = 'sequences__item--fail';
   const selectedMatrixSymbols = [];
   const sequencesStatus = sequences.map(() => undefined);
   let sequenceCursor = -1;
 
-  const cells: HTMLElement[] = [];
-  const rows = sequences.map(({ symbols, points }, rowIndex) => {
-    return (
-      <li class="sequences__item">
-        {symbols.map((symbol, columnIndex) => {
-          const cell = (
-            <button
-              class="sequences__cell"
-              data-row={rowIndex.toString()}
-              data-column={columnIndex.toString()}
-              data-symbol={symbol}
-            >
-              {symbol}
-            </button>
-          );
-
-          cells.push(cell);
-
-          return cell;
-        })}
-        <div class="sequences__details">
-          <span class="sequences__name">DATAMINE_V{rowIndex}</span>
-          <span class="sequences__value">
-            {points}points
-          </span>
-        </div>
-      </li>
-    );
-  });
-
+  /**
+   * Push the vertical scope to the next column.
+   */
   const pushScopeCursor = effect(() => {
     const nextCursor = Math.min(bufferLength, sequenceCursor + 1);
     sequenceCursor = nextCursor;
@@ -65,6 +85,9 @@ export const Sequences = ({ className }: Props) => {
     }
   });
 
+  /**
+   * Move given row to the next column.
+   */
   const pushRow = (rowIndex: number) => {
     const rowCells = cells.filter(findCell, { row: rowIndex });
 
@@ -85,100 +108,98 @@ export const Sequences = ({ className }: Props) => {
     cells.push(emptyCell);
   };
 
-  const listHandler = (el) => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
+  /**
+   * Check if given sequence succeed.
+   */
+  const isRowSucceed = (rowIndex: number) => {
+    const sequenceText = sequences[rowIndex].symbols.join('');
+    const bufferText = selectedMatrixSymbols.join('');
 
-    /**
-     * Request the matrix to highlight a symbol currently selected by a user.
-     */
-    const handleMouseOver = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const symbol = target.dataset.symbol;
-      const symbolSearchEvent = new CustomEvent('symbol-search', { detail: symbol });
+    return bufferText.includes(sequenceText);
+  }
 
-      eventBus.dispatchEvent(symbolSearchEvent);
-    };
+  /**
+   * Request the matrix to highlight a symbol currently selected by a user.
+   */
+  const handleMouseOver = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    const symbol = target.dataset.symbol;
+    const symbolSearchEvent = new CustomEvent('symbol-search', { detail: symbol });
 
-    /**
-     * Highlight a sequence symbol that is being currently highlighted in the matrix.
-     */
-    const handleMatrixCellHightlight = effect((event: CustomEvent) => {
-      const { symbol, disabled } = event.detail || {};
-      if (!symbol || disabled) {
-        return;
+    eventBus.dispatchEvent(symbolSearchEvent);
+  };
+
+  /**
+   * Highlight a sequence symbol that is being currently highlighted in the matrix.
+   */
+  const handleMatrixCellHightlight = effect((event: CustomEvent) => {
+    const { symbol, disabled } = event.detail || {};
+    if (!symbol || disabled) return;
+
+    const symbolsToHighlight = cells.filter(findCell, { symbol, column: sequenceCursor });
+
+    return classListEffect(highlightClass, symbolsToHighlight);
+  });
+
+  /**
+   * A cell in the matrix has been selected.
+   * Check if any sequence failed or succeed,
+   * highlight a selected symbol in sequences,
+   * move the cursor and rows if possible.
+   */
+  const handleMatrixCellSelect = (event: CustomEvent) => {
+    const { symbol } = event.detail;
+    selectedMatrixSymbols.push(symbol);
+
+    const cursorCells = cells.filter(findCell, { column: sequenceCursor });
+
+    cursorCells.forEach((cell, rowIndex) => {
+      const sequenceStatus = sequencesStatus[rowIndex];
+      const sequenceAlreadyDone = sequenceStatus !== undefined;
+      if (sequenceAlreadyDone) return;
+
+      const prevCell = cells.find(findCell, { row: rowIndex, column: sequenceCursor - 1 });
+      const prevCellIsDisabled = Boolean(prevCell && prevCell.dataset.disabled);
+      const prevCellIsSelected = Boolean(prevCell && prevCell.classList.contains(selectedClass))
+      const isSelectable = !prevCell || prevCellIsDisabled || prevCellIsSelected;
+
+      // f3 d0 - sequence
+      // f3 f3 - sequence
+      if (isSelectable && cell.dataset.symbol === symbol) {
+        cell.classList.add(selectedClass);
+
+        const hasSequenceSucceed = isRowSucceed(rowIndex);
+        if (hasSequenceSucceed) {
+          sequencesStatus[rowIndex] = true;
+          rows[rowIndex].classList.add(succeedClass);
+        }
+      } else {
+        const rowCells = cells.filter(findCell, { row: rowIndex });
+        const isMovable = prevCell?.dataset.symbol === cell.dataset.symbol || !prevCellIsSelected;
+        if (isMovable && (bufferLength > rowCells.length)) {
+          pushRow(rowIndex);
+        } else {
+          // TODO: Failed?
+          sequencesStatus[rowIndex] = false;
+          rows[rowIndex].classList.add(failedClass);
+        }
       }
-
-      const symbolsToHighlight = cells.filter(findCell, { symbol, column: sequenceCursor });
-
-      return classListEffect(highlightClass, symbolsToHighlight);
     });
 
-    /**
-     * A cell in the matrix has been selected.
-     * Check if any sequence failed or succeed,
-     * highlight a selected symbol in sequences,
-     * move the cursor and rows if possible.
-     */
-    const handleMatrixCellSelect = (event: CustomEvent) => {
-      const { symbol } = event.detail;
-      selectedMatrixSymbols.push(symbol);
-      const cursorCells = cells.filter(findCell, { column: sequenceCursor });
-  
-      cursorCells.forEach((cell, rowIndex) => {
-        const prevCell = cells.find(findCell, { row: rowIndex, column: sequenceCursor - 1 });
-        const prevCellIsDisabled = Boolean(prevCell && prevCell.dataset.disabled);
-        const prevCellIsSelected = Boolean(prevCell && prevCell.classList.contains(selectedClass))
-        const isSelectable = !prevCell || prevCellIsDisabled || prevCellIsSelected;
-  
-        // f3 d0 - sequence
-        // f3 f3 - sequence
-        // TODO: check first if any sequence succeed
-        if (isSelectable && cell.dataset.symbol === symbol) {
-          cell.classList.add(selectedClass);
-        } else {
-          const rowCells = cells.filter(findCell, { row: rowIndex });
-          // TODO: do not move ended sequences
-          const isMovable = prevCell?.dataset.symbol === cell.dataset.symbol || !prevCellIsSelected;
-          if (isMovable && (bufferLength > rowCells.length)) {
-            pushRow(rowIndex);
-          } else {
-            console.log('failed?', { cell, rowIndex, prevCell, prevCellIsSelected });
-            // TODO: Failed?
-          }
-        }
-      });
-
-      pushScopeCursor();
-    };
-
-    el.addEventListener('mouseover', handleMouseOver, { signal });
-    eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
-    eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
-    eventBus.addEventListener('game-end', () => {
-      abortController.abort();
-    },  { signal, once: true });
-
-    return () => {
-      abortController.abort();
-    };
-  }
+    pushScopeCursor();
+  };
 
   pushScopeCursor();
 
+  const abortController = new AbortController();
+  const signal = abortController.signal;
 
-  return (
-    <div class={`${className} sequences card`}>
-      <div class="card__header card__header--secondary">
-        Seuqence required to upload
-      </div>
-      <ul
-        class="sequences__list"
-        style={`--sequences-size:${longestSequence};`}
-        ref={listHandler}
-      >
-        {rows}
-      </ul>
-    </div>
-  )
+  list.addEventListener('mouseover', handleMouseOver, { signal });
+  eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
+  eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
+  eventBus.addEventListener('game-end', () => {
+    abortController.abort();
+  },  { once: true });
+
+  return view;
 };
