@@ -39,7 +39,7 @@ export const Buffer = ({ className }: Props) => {
     const shouldEndGame = nextCursor === length;
 
     if (shouldEndGame) {
-      // Defer the game-end event for animations.
+      // Defer the game-end event for the buffer animations.
       return defer(() => {
         eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'buffer' }));
       });

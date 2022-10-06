@@ -10,15 +10,33 @@
   position: relative;
 }
 
+.sequences__cursor > * {
+  grid-column-start: calc(var(--sequences-cursor));
+}
+
+.sequences__cursor > *::before {
+  background: var(--gray-400);
+  width: var(--sequence-cell-size);
+  height: 100%;
+  content: '';
+  top: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.sequences__cursor,
 .sequences__item {
   --sequence-cell-size: var(--size-500);
-  --sequence-value-color: var(--primary-300);
 
   align-items: center;
   display: grid;
   gap: var(--size-200);
   grid-template-columns: repeat(var(--sequences-size), var(--sequence-cell-size));
   grid-auto-flow: column;
+}
+
+.sequences__item {
+  position: relative;
 }
 
 .sequences__details {
@@ -29,7 +47,7 @@
 }
 
 .sequences__value {
-  color: var(--sequence-value-color);
+  color: var(--primary-300);
   text-transform: lowercase;
 }
 
@@ -55,52 +73,51 @@
   color: var(--primary-300);
 }
 
-.sequences__cell--cursor::before {
-  content: '';
-  position: absolute;
-  background: var(--gray-400);
-  top: 0;
-  width: var(--sequence-cell-size);
-  height: 100%;
-  z-index: -1;
-}
-
 .sequences__status {
   align-items: center;
-  color: var(--bg-color);
   display: flex;
   padding: var(--size-100);
   position: absolute;
 }
 
-.sequences__status ~ .sequences__details {
-  --sequence-value-color: var(--bg-color);
+.sequences__status,
+.sequences__status ~ * * {
   color: var(--bg-color);
 }
 
-.sequences__status ~ .sequences__cell {
-  color: transparent;
-  box-shadow: none;
-}
-
-.sequences__item--success,
-.sequences__item--fail {
-  pointer-events: none;
-}
-
+.sequences__item--fail,
 .sequences__item--success {
-  background-color: green;
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% calc(100% - var(--size-400)),
+    calc(100% - var(--size-400)) 100%,
+    0% 100%
+  );
 }
 
-.sequences__item--fail {
-  /** animate background gradient **/
-  background-color: red;
+.sequences__item--success::before {
+  background-color: var(--green);
+}
+
+.sequences__item--fail::before {
+  background-color: var(--red);
+}
+
+.sequences__item--fail::before,
+.sequences__item--success::before {
+  animation: rollIn 250ms forwards ease-in-out;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
 
 @keyframes rollIn {
-
+  0% { transform: translateY(-75%);}
+  100% { transform: translateY(0%);}
 }
-
 
 

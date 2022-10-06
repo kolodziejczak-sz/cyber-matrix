@@ -1,7 +1,8 @@
+import { classListEffect } from '@/utils/classListEffect';
+import { defer } from '@/utils/defer';
+import { effect } from '@/utils/effect';
 import { getContext } from '@/game/context';
 import { findCell } from '@/game/findCell';
-import { classListEffect } from '@/utils/classListEffect';
-import { effect } from '@/utils/effect';
 
 import './Sequences.css';
 
@@ -44,12 +45,19 @@ export const Sequences = ({ className }: Props) => {
     </li>
   ));
 
+  const cursor = (
+    <div class="sequences__cursor" style="--sequences-cursor:1;">
+      <div />
+    </div>
+  );
+
   const list = (
     <ul
       class="sequences__list"
       style={`--sequences-size:${longestSequence};`}
     >
       {rows}
+      {cursor}
     </ul>
   );
 
@@ -64,7 +72,6 @@ export const Sequences = ({ className }: Props) => {
 
   const selectedClass = 'sequences__cell--selected';
   const highlightClass = 'sequences__cell--highlight';
-  const cursorClass = 'sequences__cell--cursor';
   const succeedClass = 'sequences__item--success';
   const failedClass = 'sequences__item--fail';
   const selectedMatrixSymbols = [];
@@ -72,18 +79,15 @@ export const Sequences = ({ className }: Props) => {
   let sequenceCursor = -1;
 
   /**
-   * Push the vertical scope to the next column.
+   * Push the vertical cursor to the next column.
    */
-  const pushScopeCursor = effect(() => {
+  const pushCursor = () => {
     const nextCursor = Math.min(bufferLength, sequenceCursor + 1);
     sequenceCursor = nextCursor;
 
-    const cell = cells.find(findCell, { column: nextCursor });
-
-    if (cell) {
-      return classListEffect(cursorClass, cell);
-    }
-  });
+    const cssGridIndex = (nextCursor + 2).toString();
+    cursor.style.setProperty('--sequences-cursor', cssGridIndex);
+  };
 
   /**
    * Move given row to the next column.
@@ -106,6 +110,32 @@ export const Sequences = ({ className }: Props) => {
 
     rows[rowIndex].prepend(emptyCell);
     cells.push(emptyCell);
+  };
+
+  /**
+   * Finish sequence and render feedback.
+   */
+  const finishSequence = (rowIndex: number, result: boolean) => {
+    sequencesStatus[rowIndex] = result;
+
+    const rowCells = cells.filter(findCell, { row: rowIndex });
+    rowCells.forEach(c => c.remove())
+
+    const sequence = rows[rowIndex];
+    sequence.classList.add(result ? succeedClass : failedClass);
+    sequence.prepend(
+      <div class='sequences__status'>
+        {result ? 'Success' : 'Failed'}
+      </div>
+    );
+
+    const isGameEnd = sequencesStatus.every(status => status !== undefined);
+    if (isGameEnd) {
+      // Defer the game-end event for the buffer animations.
+      defer(() => {
+        eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'sequences' }));
+      });
+    }
   };
 
   /**
@@ -139,21 +169,6 @@ export const Sequences = ({ className }: Props) => {
     const bufferText = selectedMatrixSymbols.join('');
 
     return bufferText.includes(sequenceText);
-  };
-
-  /**
-   * Finish sequence and render feedback.
-   */
-  const finishSequence = (rowIndex: number, result: boolean) => {
-    sequencesStatus[rowIndex] = result;
-
-    const sequence = rows[rowIndex];
-    sequence.classList.add(result ? succeedClass : failedClass);
-    sequence.prepend(
-      <div class='sequences__status'>
-        {result ? 'Success' : 'Failed'}
-      </div>
-    );
   };
 
   /**
@@ -199,11 +214,8 @@ export const Sequences = ({ className }: Props) => {
       }
     });
 
-    pushScopeCursor();
+    pushCursor();
   };
-
-  pushScopeCursor();
-  finishSequence(0, false)
 
   const abortController = new AbortController();
   const signal = abortController.signal;
