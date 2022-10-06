@@ -17,7 +17,7 @@ export const Sequences = ({ className }: Props) => {
     bufferLength, ...sequences.map(({ length }) => length)
   );
 
-  const cells: HTMLElement[] = [];
+  let cells: HTMLElement[] = [];
   const rows = sequences.map(({ symbols, points }, rowIndex) => (
     <li class="sequences__item">
       {symbols.map((symbol, columnIndex) => {
@@ -76,50 +76,63 @@ export const Sequences = ({ className }: Props) => {
   const failedClass = 'sequences__item--fail';
   const selectedMatrixSymbols = [];
   const sequencesStatus = sequences.map(() => undefined);
-  let sequenceCursor = -1;
+  let cursorIndex = 0;
 
   /**
    * Push the vertical cursor to the next column.
    */
   const pushCursor = () => {
-    const nextCursor = Math.min(bufferLength, sequenceCursor + 1);
-    sequenceCursor = nextCursor;
+    const nextCursor = Math.min(bufferLength, cursorIndex + 1);
+    const cssGridIndex = Math.min(bufferLength, nextCursor + 1).toString();
 
-    const cssGridIndex = (nextCursor + 2).toString();
+    cursorIndex = nextCursor;
     cursor.style.setProperty('--sequences-cursor', cssGridIndex);
   };
 
   /**
    * Move given row to the next column.
    */
-  const pushRow = (rowIndex: number) => {
+  const pushRow = (rowIndex: number, maxDistance: number): boolean => {
     const rowCells = cells.filter(findCell, { row: rowIndex });
+    const bufferEndIndex = bufferLength - 1;
+    const lastRowCell = rowCells[rowCells.length - 1];
+    const columnEndIndex = Number(lastRowCell.dataset.column) + maxDistance;
+    const distance = (columnEndIndex > bufferEndIndex) ? columnEndIndex - bufferEndIndex : maxDistance;
+
+    if (distance !== maxDistance) {
+      return false;
+    }
 
     rowCells.forEach(cell => {
-      const nextColumn = (Number(cell.dataset.column) + 1).toString()
+      const nextColumn = (Number(cell.dataset.column) + distance).toString()
       cell.setAttribute('data-column', nextColumn);
     });
 
-    const emptyCell = (
-      <button
-        data-row={rowIndex.toString()}
-        data-column="0"
-        data-disabled="true"
-      />
-    );
+    for (let i = 0; i < distance; i++) {
+      const emptyCell = (
+        <button
+          data-row={rowIndex.toString()}
+          data-column="0"
+          data-disabled="true"
+        />
+      );
+  
+      rows[rowIndex].prepend(emptyCell);
+    }
 
-    rows[rowIndex].prepend(emptyCell);
-    cells.push(emptyCell);
+    return true;
   };
 
   /**
    * Finish sequence and render feedback.
+   * Remove no longer needed cells and check if the game should end.
    */
   const finishSequence = (rowIndex: number, result: boolean) => {
     sequencesStatus[rowIndex] = result;
 
     const rowCells = cells.filter(findCell, { row: rowIndex });
-    rowCells.forEach(c => c.remove())
+    rowCells.forEach(c => c.remove());
+    cells = cells.filter(c => !rowCells.includes(c));
 
     const sequence = rows[rowIndex];
     sequence.classList.add(result ? succeedClass : failedClass);
@@ -140,6 +153,7 @@ export const Sequences = ({ className }: Props) => {
 
   /**
    * Request the matrix to highlight a symbol currently selected by a user.
+   * Emit an event to let the matrix know what symbol is being searched.
    */
   const handleMouseOver = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -156,7 +170,7 @@ export const Sequences = ({ className }: Props) => {
     const { symbol, disabled } = event.detail || {};
     if (!symbol || disabled) return;
 
-    const symbolsToHighlight = cells.filter(findCell, { symbol, column: sequenceCursor });
+    const symbolsToHighlight = cells.filter(findCell, { symbol, column: cursorIndex });
 
     return classListEffect(highlightClass, symbolsToHighlight);
   });
@@ -178,38 +192,48 @@ export const Sequences = ({ className }: Props) => {
    * move the cursor and rows if possible.
    */
   const handleMatrixCellSelect = (event: CustomEvent) => {
-    const { symbol } = event.detail;
-    selectedMatrixSymbols.push(symbol);
+    const { symbol: bufferLastSymbol } = event.detail;
+    selectedMatrixSymbols.push(bufferLastSymbol);
 
-    const cursorCells = cells.filter(findCell, { column: sequenceCursor });
+    const cursorCells = cells.filter(findCell, { column: cursorIndex });
 
-    cursorCells.forEach((cell, rowIndex) => {
-      const sequenceStatus = sequencesStatus[rowIndex];
-      const isSequenceAlreadyDone = sequenceStatus !== undefined;
-      if (isSequenceAlreadyDone) return;
+    cursorCells.forEach((cursorCell) => {
+      const rowIndex = Number(cursorCell.dataset.row);
+      const hasSequenceSucceed = isRowSucceed(rowIndex);
+      if (hasSequenceSucceed) {
+        return finishSequence(rowIndex, true);
+      }
 
-      const prevCell = cells.find(findCell, { row: rowIndex, column: sequenceCursor - 1 });
-      const isPrevCellDisabled = Boolean(prevCell && prevCell.dataset.disabled);
-      const isPrevCellSelected = Boolean(prevCell && prevCell.classList.contains(selectedClass))
-      const isSelectable = !prevCell || isPrevCellDisabled || isPrevCellSelected;
+      const rowCells = cells.filter(findCell, { row: rowIndex });
+      const prevCell = cells.find(findCell, { row: rowIndex, column: cursorIndex - 1 });
+      const isPrevCellExists = Boolean(prevCell);
+      const isPrevCellSelected = Boolean(isPrevCellExists && prevCell.classList.contains(selectedClass))
+      const isSelectable = !isPrevCellExists || isPrevCellSelected;
 
-      // f3 d0 - sequence
-      // f3 f3 - sequence
-      if (isSelectable && cell.dataset.symbol === symbol) {
-        cell.classList.add(selectedClass);
-
-        const hasSequenceSucceed = isRowSucceed(rowIndex);
-        if (hasSequenceSucceed) {
-          finishSequence(rowIndex, true);
-        }
+      if (isSelectable && cursorCell.dataset.symbol === bufferLastSymbol) {
+        cursorCell.classList.add(selectedClass);
       } else {
-        const rowCells = cells.filter(findCell, { row: rowIndex });
-        const isMovable = prevCell?.dataset.symbol === cell.dataset.symbol || !isPrevCellSelected;
-        if (isMovable && (bufferLength > rowCells.length)) {
-          pushRow(rowIndex);
+        rowCells.forEach(c => c.classList.remove(selectedClass));
+
+        const optionsLeftCount = bufferLength - selectedMatrixSymbols.length;
+        const sequenceLength = sequences[rowIndex].symbols.length
+        const cursorOverSequenceIndex = rowCells.indexOf(cursorCell);
+        const hasSequenceFailed = optionsLeftCount < (sequenceLength - cursorOverSequenceIndex);
+
+        if (hasSequenceFailed) {
+          return finishSequence(rowIndex, false);
+        }
+
+        const rowLength = rowCells.length;
+        const isMovable = (bufferLength > rowLength);
+        if (isMovable) {
+          const pushCount = cursorOverSequenceIndex + 1;
+          const pushSucceed = pushRow(rowIndex, pushCount);
+          if (!pushSucceed) {
+            finishSequence(rowIndex, false)
+          }
         } else {
-          // TODO: Failed?
-          finishSequence(rowIndex, false);
+          console.log('the row')
         }
       }
     });
