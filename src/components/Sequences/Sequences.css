@@ -2,6 +2,13 @@
   color: var(--gray-200);
 }
 
+.sequences__header {
+  color: var(--primary-300);
+  padding-block: var(--size-100);
+  padding-inline: var(--size-400);
+  border: 1px solid var(--border-color);
+}
+
 .sequences__list {
   display: grid;
   gap: var(--size-100);
@@ -65,8 +72,9 @@
 }
 
 .sequences__cell--selected {
+  animation: selection 500ms ease-in-out;
+  border-color: currentColor;
   color: var(--primary-300);
-  border-color: var(--primary-300);
 }
 
 .sequences__status {

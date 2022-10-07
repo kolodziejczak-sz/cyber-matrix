@@ -62,8 +62,8 @@ export const Sequences = ({ className }: Props) => {
   );
 
   const view = (
-    <div class={`${className} sequences card`}>
-      <div class="card__header card__header--secondary">
+    <div class={`${className} sequences cut-border`}>
+      <div class="sequences__header">
         Sequence required to upload
       </div>
       {list}

@@ -4,6 +4,13 @@
   position: relative;
 }
 
+.matrix__header {
+  background-color: var(--primary-300);
+  color: var(--gray-300);
+  padding-block: var(--size-100);
+  padding-inline: var(--size-400);
+}
+
 .matrix__cells {
   --cell-size: var(--size-700);
 

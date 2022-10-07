@@ -41,8 +41,8 @@ export const Matrix = ({ className }: Props) => {
   );
 
   const view = (
-    <div class={`${className} matrix card`}>
-      <header class="card__header">Code Matrix</header>
+    <div class={`${className} matrix cut-border`}>
+      <header class="matrix__header">Code Matrix</header>
       {cellsContainer}
     </div>
   );

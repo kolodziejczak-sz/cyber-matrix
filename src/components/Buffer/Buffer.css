@@ -25,6 +25,7 @@
 }
 
 .buffer__cell--selected {
+  animation: selection 500ms ease-in-out;
   border-style: solid;
 }
 
