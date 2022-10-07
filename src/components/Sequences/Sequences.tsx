@@ -92,16 +92,8 @@ export const Sequences = ({ className }: Props) => {
   /**
    * Move given row to the next column.
    */
-  const pushRow = (rowIndex: number, maxDistance: number): boolean => {
+  const pushRow = (rowIndex: number, distance: number) => {
     const rowCells = cells.filter(findCell, { row: rowIndex });
-    const bufferEndIndex = bufferLength - 1;
-    const lastRowCell = rowCells[rowCells.length - 1];
-    const columnEndIndex = Number(lastRowCell.dataset.column) + maxDistance;
-    const distance = (columnEndIndex > bufferEndIndex) ? columnEndIndex - bufferEndIndex : maxDistance;
-
-    if (distance !== maxDistance) {
-      return false;
-    }
 
     rowCells.forEach(cell => {
       const nextColumn = (Number(cell.dataset.column) + distance).toString()
@@ -119,8 +111,6 @@ export const Sequences = ({ className }: Props) => {
   
       rows[rowIndex].prepend(emptyCell);
     }
-
-    return true;
   };
 
   /**
@@ -176,16 +166,6 @@ export const Sequences = ({ className }: Props) => {
   });
 
   /**
-   * Check if given sequence succeed.
-   */
-  const isRowSucceed = (rowIndex: number) => {
-    const sequenceText = sequences[rowIndex].symbols.join('');
-    const bufferText = selectedMatrixSymbols.join('');
-
-    return bufferText.includes(sequenceText);
-  };
-
-  /**
    * A cell in the matrix has been selected.
    * Check if any sequence failed or succeed,
    * highlight a selected symbol in sequences,
@@ -199,42 +179,53 @@ export const Sequences = ({ className }: Props) => {
 
     cursorCells.forEach((cursorCell) => {
       const rowIndex = Number(cursorCell.dataset.row);
-      const hasSequenceSucceed = isRowSucceed(rowIndex);
-      if (hasSequenceSucceed) {
+      const sequenceSymbols = sequences[rowIndex].symbols;
+
+      const sequenceText = sequenceSymbols.join('');
+      const bufferText = selectedMatrixSymbols.join('');
+      const hasRowSucceed = bufferText.includes(sequenceText);
+
+      if (hasRowSucceed) {
         return finishSequence(rowIndex, true);
       }
 
       const rowCells = cells.filter(findCell, { row: rowIndex });
-      const prevCell = cells.find(findCell, { row: rowIndex, column: cursorIndex - 1 });
-      const isPrevCellExists = Boolean(prevCell);
-      const isPrevCellSelected = Boolean(isPrevCellExists && prevCell.classList.contains(selectedClass))
-      const isSelectable = !isPrevCellExists || isPrevCellSelected;
+      const cursorOverSequenceIndex = rowCells.indexOf(cursorCell);
+      const prevCells = rowCells.slice(0, cursorOverSequenceIndex);
 
-      if (isSelectable && cursorCell.dataset.symbol === bufferLastSymbol) {
+      const [lastPrevCell] = prevCells.slice(-1); 
+      const isSelectable = !lastPrevCell ? true : lastPrevCell.classList.contains(selectedClass);
+      const isRightSymbol = cursorCell.dataset.symbol === bufferLastSymbol;
+
+      if (isSelectable && isRightSymbol) {
         cursorCell.classList.add(selectedClass);
       } else {
-        rowCells.forEach(c => c.classList.remove(selectedClass));
-
         const optionsLeftCount = bufferLength - selectedMatrixSymbols.length;
-        const sequenceLength = sequences[rowIndex].symbols.length
-        const cursorOverSequenceIndex = rowCells.indexOf(cursorCell);
-        const hasSequenceFailed = optionsLeftCount < (sequenceLength - cursorOverSequenceIndex);
+        const sequenceLength = sequenceSymbols.length;
+        const hasNoSpaceLeft = optionsLeftCount < (sequenceLength - cursorOverSequenceIndex);
 
-        if (hasSequenceFailed) {
+        if (hasNoSpaceLeft) {
           return finishSequence(rowIndex, false);
         }
 
-        const rowLength = rowCells.length;
-        const isMovable = (bufferLength > rowLength);
-        if (isMovable) {
-          const pushCount = cursorOverSequenceIndex + 1;
-          const pushSucceed = pushRow(rowIndex, pushCount);
-          if (!pushSucceed) {
-            finishSequence(rowIndex, false)
+        let pushCount = 1;
+
+        prevCells.forEach(prevCell => {
+          if (prevCell.dataset.symbol !== bufferLastSymbol) {
+            prevCell.classList.remove(selectedClass);
+            pushCount += 1;
           }
-        } else {
-          console.log('the row')
+        });
+
+        const lastRowCell = rowCells[rowCells.length - 1];
+        const nextColumnEndIndex = Number(lastRowCell.dataset.column) + pushCount;
+        const bufferEndIndex = bufferLength - 1;
+
+        if (nextColumnEndIndex > bufferEndIndex) {
+          return finishSequence(rowIndex, false)
         }
+
+        pushRow(rowIndex, pushCount);
       }
     });
 

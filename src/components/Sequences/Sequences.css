@@ -53,15 +53,10 @@
 
 .sequences__cell {
   align-content: center;
+  border: 1px solid transparent;
   display: inline-grid;
   height: var(--sequence-cell-size);
   width: var(--sequence-cell-size);
-}
-
-.sequences__cell:hover {
-  color: var(--primary-300);
-  outline: 1px solid var(--primary-300);
-  outline-offset: -1px;
 }
 
 .sequences__cell--highlight {
@@ -71,6 +66,7 @@
 
 .sequences__cell--selected {
   color: var(--primary-300);
+  border-color: var(--primary-300);
 }
 
 .sequences__status {
