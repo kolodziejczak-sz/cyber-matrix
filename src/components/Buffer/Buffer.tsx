@@ -61,6 +61,8 @@ export const Buffer = ({ className }: Props) => {
 
     cellToPopulate.classList.add(selectedClass);
     cellToPopulate.textContent = symbol;
+    eventBus.dispatchEvent(new CustomEvent('buffer-update', { detail: symbol }));
+
     pushBufferCursor();
   };
 
@@ -93,11 +95,7 @@ export const Buffer = ({ className }: Props) => {
 
   eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
   eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
-
-  /** Game ended. Send the status */
-  eventBus.addEventListener('game-end', () => {
-    abortController.abort();
-  }, { once: true });
+  eventBus.addEventListener('game-end', () => abortController.abort(), { once: true });
 
   return view;
 }

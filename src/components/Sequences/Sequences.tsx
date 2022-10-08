@@ -74,8 +74,8 @@ export const Sequences = ({ className }: Props) => {
   const highlightClass = 'sequences__cell--highlight';
   const succeedClass = 'sequences__item--success';
   const failedClass = 'sequences__item--fail';
-  const selectedMatrixSymbols = [];
   const sequencesStatus = sequences.map(() => undefined);
+  const selectedMatrixSymbols = [];
   let cursorIndex = 0;
 
   /**
@@ -171,8 +171,8 @@ export const Sequences = ({ className }: Props) => {
    * highlight a selected symbol in sequences,
    * move the cursor and rows if possible.
    */
-  const handleMatrixCellSelect = (event: CustomEvent) => {
-    const { symbol: bufferLastSymbol } = event.detail;
+  const handleBufferUpdate = (event: CustomEvent) => {
+    const bufferLastSymbol = event.detail;
     selectedMatrixSymbols.push(bufferLastSymbol);
 
     const cursorCells = cells.filter(findCell, { column: cursorIndex });
@@ -237,7 +237,7 @@ export const Sequences = ({ className }: Props) => {
 
   list.addEventListener('mouseover', handleMouseOver, { signal });
   eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
-  eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
+  eventBus.addEventListener('buffer-update', handleBufferUpdate, { signal });
   eventBus.addEventListener('game-end', () => {
     abortController.abort();
   },  { once: true });
