@@ -12,7 +12,7 @@ type Props = {
 }
 
 export const Matrix = ({ className }: Props) => {
-  const { eventBus, matrix, settings: { scopeSettings } } = getContext();
+  const { eventBus, matrix, settings: { scopeSettings, controllerSettings } } = getContext();
   const { rowLength, symbols } = matrix;
 
   const cells = symbols.map((symbol, index) => {
@@ -55,11 +55,11 @@ export const Matrix = ({ className }: Props) => {
   /**
    * Find a cell to highlight within the scope.
    */
-  const getCellToHighlight = (event: MouseEvent) => {
-    const { direction, index } = scope.getValue();
+  const getCellToHighlight = (event: Event) => {
     const { row, column } = (event.target as HTMLElement).dataset;
+    if (event.type === 'focusout' || (!row && !column)) return;
 
-    if (!row && !column) return;
+    const { direction, index } = scope.getValue();
 
     return cells.find(findCell, {
       row: Number(row),
@@ -69,9 +69,9 @@ export const Matrix = ({ className }: Props) => {
   };
 
   /**
-   * A user clicked a symbol in the matrix. Select a highlighted cell.
+   * A user selected a symbol in the matrix. Propagate a highlighted cell.
    */
-  const handleClick = (event: MouseEvent) => {
+  const handleSelect = (event: Event) => {
     const target = event.target as HTMLElement;
     if (target.tagName !== 'BUTTON') {
       return;
@@ -97,13 +97,13 @@ export const Matrix = ({ className }: Props) => {
     const matrixSelectedEvent = new CustomEvent('cell-select', { detail: highlightedCell.dataset });
     eventBus.dispatchEvent(matrixSelectedEvent);
 
-    handleMouseOver(event);
+    handleHover(event);
   };
 
   /**
-   * A user hovers over a symbol in the matrix. Highlight a cell in range of the scope.
+   * A user hovers over a symbol in the matrix. Highlight a cell in the scope range.
    */
-  const handleMouseOver = effect((event: MouseEvent) => {
+  const handleHover = effect((event: Event) => {
     const cellToHighlight = getCellToHighlight(event);
     const matrixHighlightEvent = new CustomEvent('cell-highlight', { detail: cellToHighlight?.dataset });
     eventBus.dispatchEvent(matrixHighlightEvent);
@@ -128,8 +128,15 @@ export const Matrix = ({ className }: Props) => {
   const abortController = new AbortController();
   const signal = abortController.signal;
 
-  cellsContainer.addEventListener('mouseover', handleMouseOver, { signal });
-  cellsContainer.addEventListener('click', handleClick, { signal });
+  if (controllerSettings === 'touch') {
+    cellsContainer.addEventListener('focusin', handleHover, { signal });
+    cellsContainer.addEventListener('focusout', handleHover, { signal });
+    cellsContainer.addEventListener('dblclick', handleSelect, { signal });
+  } else {
+    cellsContainer.addEventListener('mouseover', handleHover, { signal });
+    cellsContainer.addEventListener('click', handleSelect, { signal });
+  }
+
   eventBus.addEventListener('symbol-search', handleSymbolSearch, { signal });
   eventBus.addEventListener('game-end', () => abortController.abort(), { once: true });
 

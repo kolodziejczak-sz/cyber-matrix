@@ -11,7 +11,7 @@
   align-items: center;
   border: 1px solid currentColor;
   margin-inline-start: auto;
-  width: var(--size-700);
+  width: calc(5 * var(--size-300));
   height: var(--size-500);
 }
 

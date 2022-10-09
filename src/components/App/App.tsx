@@ -10,8 +10,8 @@ export const App = () => {
     <div class="app">
       <Timer className="app__timer" />
       <Buffer className="app__buffer" />
-      <Matrix className="app__matrix" />
       <Sequences className="app__sequences" />
+      <Matrix className="app__matrix" />
     </div>
   )
 }

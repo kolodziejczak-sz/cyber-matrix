@@ -13,9 +13,8 @@ export const Timer = ({ className }: Props) => {
   const getTimeText = (value: number) => {
     let sec = Math.max(0, Math.round(value / 100) / 10).toString();
 
-    if (!sec.includes('.')) {
-      sec += '.0';
-    }
+    if (!sec.includes('.')) sec += '.0';
+
     return sec;
   };
 
@@ -45,7 +44,6 @@ export const Timer = ({ className }: Props) => {
       time.textContent = getTimeText(duration);
 
       if (duration === 0) {
-        stopTimer();
         eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'timer' }));
       }
     }, intervalMs);
@@ -57,10 +55,10 @@ export const Timer = ({ className }: Props) => {
   /** A user selected any cell. The timer starts. */
   eventBus.addEventListener('cell-select', startTimer, { signal, once: true });
   eventBus.addEventListener('game-end', () => {  
-    stopTimer();
     abortController.abort();
 
-    eventBus.dispatchEvent(new CustomEvent('timer-status', { detail: duration }));
+    stopTimer();
+    eventBus.dispatchEvent(new CustomEvent('time-left', { detail: duration }));
   }, { once: true });
 
   return view;

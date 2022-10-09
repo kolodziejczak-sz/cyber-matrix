@@ -12,7 +12,8 @@ type Props = {
 
 export const Sequences = ({ className }: Props) => {
   const { sequences, eventBus, settings } = getContext();
-  const bufferLength = settings.bufferSettings.length;
+  const { bufferSettings, controllerSettings } = settings;
+  const bufferLength = bufferSettings.length;
   const longestSequence = Math.max(
     bufferLength, ...sequences.map(({ length }) => length)
   );
@@ -143,11 +144,11 @@ export const Sequences = ({ className }: Props) => {
 
   /**
    * Request the matrix to highlight a symbol currently selected by a user.
-   * Emit an event to let the matrix know what symbol is being searched.
+   * Emit an event to let the matrix know what symbol is being queried.
    */
-  const handleMouseOver = (event: MouseEvent) => {
+  const handleSymbolQuery = (event: Event) => {
     const target = event.target as HTMLElement;
-    const symbol = target.dataset.symbol;
+    const symbol = event.type === 'focusout' ? null : target.dataset.symbol;
     const symbolSearchEvent = new CustomEvent('symbol-search', { detail: symbol });
 
     eventBus.dispatchEvent(symbolSearchEvent);
@@ -235,11 +236,19 @@ export const Sequences = ({ className }: Props) => {
   const abortController = new AbortController();
   const signal = abortController.signal;
 
-  list.addEventListener('mouseover', handleMouseOver, { signal });
+  if (controllerSettings === 'touch') {
+    list.addEventListener('focusin', handleSymbolQuery, { signal });
+    list.addEventListener('focusout', handleSymbolQuery, { signal });
+  } else {
+    list.addEventListener('mouseover', handleSymbolQuery, { signal });
+  }
+
   eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
   eventBus.addEventListener('buffer-update', handleBufferUpdate, { signal });
   eventBus.addEventListener('game-end', () => {
     abortController.abort();
+
+    eventBus.dispatchEvent(new CustomEvent('sequences-status', { detail: sequencesStatus }));
   },  { once: true });
 
   return view;
