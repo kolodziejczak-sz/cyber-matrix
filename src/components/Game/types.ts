@@ -7,8 +7,6 @@ export type Direction = 'row' | 'column';
 
 export type Scope = ScopeSettings;
 
-export type Buffer = string[];
-
 export type Sequence = {
   length: number;
   points: number;
@@ -46,7 +44,6 @@ export type GameSettings = {
 };
 
 export type Context = {
-  buffer: Buffer;
   eventBus: EventTarget;
   matrix: Matrix;
   sequences: Sequences;

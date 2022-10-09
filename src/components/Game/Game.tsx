@@ -14,14 +14,12 @@ export const Game = () => {
   const settings = getSettings()
   const matrix = getMatrix(settings.matrixSettings.rowLength); 
   const sequences = getSequences(matrix, settings);
-  const buffer = [];
 
   const context = {
-    sequences,
-    buffer,
-    settings,
     eventBus,
     matrix,
+    settings,
+    sequences,
   };
   
   setContext(context);

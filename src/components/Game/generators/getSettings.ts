@@ -6,17 +6,25 @@ export const getSettings = () => {
   const bufferLength = getRandomInteger(4, 6);
   const matrixLength = getRandomInteger(5, 7);
 
+  const sequenceCount = 3;
+  const sequencesSettings = Array.from({ length: sequenceCount }).map(() => {
+    const length = getRandomInteger(2, bufferLength - 1);
+    const points = ((length - 1) * 100) * (length * 0.25);
+
+    return { length, points };
+  });
+
+  const timerDuration = sequencesSettings.reduce(
+    (acc, sequence) => acc + (sequence.points * 110), 0
+  );
+
   const gameSettings: GameSettings = {
-    bufferSettings: { length: bufferLength },
     controllerSettings: controllerQuery.matches ? 'touch' : 'mouse',
+    bufferSettings: { length: bufferLength },
     matrixSettings: { rowLength: matrixLength },
     scopeSettings: { index: 0, direction: 'row' },
-    sequencesSettings: [
-      { length: 2, points: 100, },
-      { length: 3, points: 200, },
-      { length: 4, points: 400, },
-    ],
-    timerSettings: { duration: 106_600 },
+    sequencesSettings: sequencesSettings,
+    timerSettings: { duration: timerDuration },
   };
   
   return gameSettings;
