@@ -1,4 +1,4 @@
-export const classListEffect = (className: string, target: HTMLElement | HTMLElement[]) => {
+export const classNameEffect = (className: string, target: HTMLElement | HTMLElement[]) => {
   if (Array.isArray(target)) {
     target.forEach(t => t.classList.add(className));
 

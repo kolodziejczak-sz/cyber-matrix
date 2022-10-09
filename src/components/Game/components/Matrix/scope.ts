@@ -1,6 +1,6 @@
-import { Scope } from '@/game/types';
-import { effect } from '@/utils/effect';
-import { findCell } from '@/game/findCell';
+import { Scope } from '@/components/Game/types';
+import { effect } from '@/components/Game/utils/effect';
+import { findCell } from '@/components/Game/utils/findCell';
 
 const cellClass = 'matrix__cell--scope';
 const containerClasses = {
@@ -8,9 +8,13 @@ const containerClasses = {
   column: 'matrix__scope-vertical'
 };
 
-export const createScope = (container: HTMLElement, initialScope: Scope) => {
-  const cells = Array.from(container.children);
+type CreateScopeProps = {
+  cells: HTMLElement[],
+  container: HTMLElement,
+  initialScope: Scope,
+}
 
+export const createScope = ({ cells, container, initialScope }: CreateScopeProps) => {
   let value = initialScope;
 
   const getValue = (): Scope | undefined => {

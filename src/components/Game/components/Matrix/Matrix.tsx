@@ -1,9 +1,9 @@
-import { effect } from '@/utils/effect';
-import { classListEffect } from '@/utils/classListEffect';
-import { getNextDirection } from '@/game/getNextDirection';
-import { getContext } from '@/game/context';
-import { createScope } from '@/components/Matrix/scope';
-import { findCell } from '@/game/findCell';
+import { effect } from '@/components/Game/utils/effect';
+import { classNameEffect } from '@/components/Game/utils/classNameEffect';
+import { getNextDirection } from '@/components/Game/generators/getNextDirection';
+import { getContext } from '@/components/Game/context';
+import { createScope } from '@/components/Game/components/Matrix/scope';
+import { findCell } from '@/components/Game/utils/findCell';
 
 import './Matrix.css';
 
@@ -50,7 +50,11 @@ export const Matrix = ({ className }: Props) => {
   const selectedClass = 'matrix__cell--selected';
   const highlightClass = 'matrix__cell--highlight';
   const queryClass = 'matrix__cell--query';
-  const scope = createScope(cellsContainer, scopeSettings);
+  const scope = createScope({
+    cells,
+    container: cellsContainer,
+    initialScope: scopeSettings
+  });
 
   /**
    * Find a cell to highlight within the scope.
@@ -110,7 +114,7 @@ export const Matrix = ({ className }: Props) => {
 
     if (!cellToHighlight) return;
 
-    return classListEffect(highlightClass, cellToHighlight);
+    return classNameEffect(highlightClass, cellToHighlight);
   });
 
   /**
@@ -122,7 +126,7 @@ export const Matrix = ({ className }: Props) => {
 
     const cellsToShow = cells.filter(findCell, { symbol, disabled: false });
 
-    return classListEffect(queryClass, cellsToShow);
+    return classNameEffect(queryClass, cellsToShow);
   });
 
   const abortController = new AbortController();

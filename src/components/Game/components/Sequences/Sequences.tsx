@@ -1,8 +1,8 @@
-import { classListEffect } from '@/utils/classListEffect';
-import { defer } from '@/utils/defer';
-import { effect } from '@/utils/effect';
-import { getContext } from '@/game/context';
-import { findCell } from '@/game/findCell';
+import { classNameEffect } from '@/components/Game/utils/classNameEffect';
+import { defer } from '@/components/Game/utils/defer';
+import { effect } from '@/components/Game/utils/effect';
+import { getContext } from '@/components/Game/context';
+import { findCell } from '@/components/Game/utils/findCell';
 
 import './Sequences.css';
 
@@ -163,7 +163,7 @@ export const Sequences = ({ className }: Props) => {
 
     const symbolsToHighlight = cells.filter(findCell, { symbol, column: cursorIndex });
 
-    return classListEffect(highlightClass, symbolsToHighlight);
+    return classNameEffect(highlightClass, symbolsToHighlight);
   });
 
   /**

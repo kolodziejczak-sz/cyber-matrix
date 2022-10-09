@@ -1,0 +1,47 @@
+.game {
+  --matrix-cell-size: var(--size-700);
+  --buffer-cell-size: var(--size-500);
+
+  align-items: start;
+  display: grid;
+  gap: var(--size-300);
+  grid-template:
+    'timer'
+    'buffer'
+    'sequences'
+    'matrix';
+  margin: var(--size-300) auto;
+  width: min(calc(100% - var(--size-300)), 1140px);
+}
+
+@media only screen and (min-width: 1140px) {
+  .game {
+    gap: var(--size-500);
+    grid-template:
+      'timer buffer'
+      'matrix sequences';
+    margin-block: var(--size-700);
+  }
+
+  .game__buffer {
+    margin-block-start: calc(-1 * var(--size-600));
+  }
+}
+
+.game__timer { grid-area: timer; }
+.game__buffer { grid-area: buffer; }
+.game__matrix { grid-area: matrix; }
+.game__sequences { grid-area: sequences; }
+
+.game :focus {
+  outline: none;
+}
+
+@keyframes selection {
+  0%, 50% {
+    background-color: var(--secondary-200);
+    color: var(--secondary-200);
+    border-color: currentColor;
+  }
+}
+

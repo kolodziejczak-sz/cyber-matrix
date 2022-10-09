@@ -1,6 +1,7 @@
 .buffer {
   color: var(--primary-100);
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--size-100);
 }
 

@@ -1,5 +1,6 @@
 .matrix {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   position: relative;
 }

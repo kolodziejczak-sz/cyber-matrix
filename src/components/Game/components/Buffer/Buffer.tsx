@@ -1,7 +1,7 @@
-import { getContext } from '@/game/context';
-import { classListEffect } from '@/utils/classListEffect';
-import { defer } from '@/utils/defer';
-import { effect } from '@/utils/effect';
+import { getContext } from '@/components/Game/context';
+import { classNameEffect } from '@/components/Game/utils/classNameEffect';
+import { defer } from '@/components/Game/utils/defer';
+import { effect } from '@/components/Game/utils/effect';
 
 import './Buffer.css';
 
@@ -48,7 +48,7 @@ export const Buffer = ({ className }: Props) => {
     bufferCursor = nextCursor;
     const cell = bufferCells[bufferCursor];
 
-    return classListEffect(cursorClass, cell);
+    return classNameEffect(cursorClass, cell);
   });
 
 
@@ -78,7 +78,7 @@ export const Buffer = ({ className }: Props) => {
     const cellToPopulate = bufferCells[bufferCursor];
     cellToPopulate.textContent = symbol;
 
-    const removeClassName = classListEffect(highlightClass, cellToPopulate);
+    const removeClassName = classNameEffect(highlightClass, cellToPopulate);
 
     return () => {
       removeClassName();

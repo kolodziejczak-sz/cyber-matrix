@@ -1,6 +1,6 @@
-import { getRandomInteger } from '@/utils/getRandomInteger';
-import { getNextDirection } from '@/game/getNextDirection';
-import { Matrix, Sequences, Sequence, GameSettings, Direction } from '@/game/types';
+import { getRandomInteger } from '@/components/Game/generators/getRandomInteger';
+import { getNextDirection } from '@/components/Game/generators/getNextDirection';
+import { Matrix, Sequences, Sequence, GameSettings, Direction } from '@/components/Game/types';
 
 export const getSequences = (
   matrix: Matrix,

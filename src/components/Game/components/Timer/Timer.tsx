@@ -1,4 +1,4 @@
-import { getContext } from '@/game/context';
+import { getContext } from '@/components/Game/context';
 
 import './Timer.css';
 
