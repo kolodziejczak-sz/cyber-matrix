@@ -1,4 +1,5 @@
 import { Game } from '@/components/Game';
+import { Menu } from '@/components/Menu';
 
 import './App.css';
 

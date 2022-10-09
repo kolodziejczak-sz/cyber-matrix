@@ -1,0 +1,4 @@
+.button {
+  padding: var(--size-100) var(--size-200);
+  padding-inline-end: var(--size-300);
+}

@@ -84,7 +84,7 @@
       inset 0 0 0 1px var(--secondary-200),
       inset 0 0 0 3px var(--bg-color),
       inset 0 0 0 4px var(--secondary-200);
-  };
+  }
 }
 
 @keyframes unglow {

@@ -9,7 +9,8 @@
     'timer'
     'buffer'
     'sequences'
-    'matrix';
+    'matrix'
+    'exit';
   margin: var(--size-300) auto;
   width: min(calc(100% - var(--size-300)), 1140px);
 }
@@ -19,7 +20,8 @@
     gap: var(--size-600);
     grid-template:
       'timer buffer'
-      'matrix sequences';
+      'matrix sequences'
+      'exit exit';
     margin-block: var(--size-800);
   }
 
@@ -32,6 +34,17 @@
 .game__buffer { grid-area: buffer; }
 .game__matrix { grid-area: matrix; }
 .game__sequences { grid-area: sequences; }
+.game__exit { grid-area: exit; }
+
+.game__exit {
+  --border-color: var(--secondary-100);
+
+  background-color: var(--bg-color);
+  color: var(--secondary-200);
+  font-size: var(--size-300);
+  margin-block-end: var(--size-300);
+  place-self: end;
+}
 
 .game :focus {
   outline: none;

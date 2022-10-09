@@ -35,22 +35,21 @@
   word-spacing: .5ch;
 }
 
-.cut-top-border {
-  --border-color: var(--primary-100);
-
-  border: 1px solid var(--border-color);
-  clip-path: polygon(var(--size-400) 0%, 100% 0, 100% 100%, 0 100%, 0% var(--size-400));
+.cut-top-border,
+.cut-bottom-border {
+  border: 1px solid var(--border-color, var(--primary-100));
   position: relative;
 }
 
+.cut-bottom-border::before,
 .cut-top-border::before {
   border-style: solid;
-  border-width: var(--size-400) var(--size-400) 0 0;
-  border-color: var(--border-color) transparent;
   content: '';
-  left: 0;
   position: absolute;
-  top: 0;
+}
+
+.cut-top-border {
+  clip-path: polygon(var(--size-400) 0%, 100% 0, 100% 100%, 0 100%, 0% var(--size-400));
 }
 
 .cut-bottom-border {
@@ -61,4 +60,18 @@
     calc(100% - var(--size-400)) 100%,
     0% 100%
   );
+}
+
+.cut-top-border::before {
+  border-width: var(--size-400) var(--size-400) 0 0;
+  border-color: var(--border-color, var(--primary-100)) transparent;
+  left: 0;
+  top: 0;
+}
+
+.cut-bottom-border::before {
+  bottom: 0;
+  border-width: 0 0 var(--size-400) var(--size-400);
+  border-color: var(--border-color) transparent;
+  right: 0;
 }

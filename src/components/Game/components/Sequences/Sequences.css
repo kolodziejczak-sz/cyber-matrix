@@ -1,4 +1,6 @@
 .sequences {
+  --border-color: var(--primary-100);
+
   color: var(--gray-100);
 }
 
@@ -41,6 +43,8 @@
 }
 
 .sequences__item {
+  --border-color: transparent;
+
   font-size: var(--size-300);
   position: relative;
 }
