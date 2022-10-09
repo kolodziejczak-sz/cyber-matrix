@@ -9,7 +9,8 @@
 }
 
 .sequences__list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--size-100);
   list-style: none;
   padding: var(--size-200);
@@ -40,11 +41,13 @@
 }
 
 .sequences__item {
+  font-size: var(--size-300);
   position: relative;
 }
 
 .sequences__details {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   line-height: var(--size-400);
   grid-column: calc(var(--sequences-size) + 1);
   padding: var(--size-100);
@@ -57,9 +60,10 @@
 }
 
 .sequences__cell {
-  align-content: center;
+  align-items: center;
   border: 1px solid transparent;
-  display: inline-grid;
+  display: flex;
+  justify-content: center;
   height: var(--buffer-cell-size);
   width: var(--buffer-cell-size);
 }
@@ -85,17 +89,6 @@
 .sequences__status,
 .sequences__status ~ * * {
   color: var(--bg-color);
-}
-
-.sequences__item--fail,
-.sequences__item--success {
-  clip-path: polygon(
-    0% 0%,
-    100% 0%,
-    100% calc(100% - var(--size-400)),
-    calc(100% - var(--size-400)) 100%,
-    0% 100%
-  );
 }
 
 .sequences__item--success::before {

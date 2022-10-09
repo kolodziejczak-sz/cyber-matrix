@@ -19,10 +19,11 @@
 }
 
 .matrix__cell {
-  align-content: center;
+  align-items: center;
   color: var(--primary-100);
-  display: inline-grid;
+  display: flex;
   height: var(--matrix-cell-size);
+  justify-content: center;
   width: var(--matrix-cell-size);
 }
 

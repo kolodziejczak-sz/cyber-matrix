@@ -1,6 +1,6 @@
 .game {
   --matrix-cell-size: var(--size-700);
-  --buffer-cell-size: var(--size-500);
+  --buffer-cell-size: var(--size-600);
 
   align-items: start;
   display: grid;
@@ -16,11 +16,11 @@
 
 @media only screen and (min-width: 1140px) {
   .game {
-    gap: var(--size-500);
+    gap: var(--size-600);
     grid-template:
       'timer buffer'
       'matrix sequences';
-    margin-block: var(--size-700);
+    margin-block: var(--size-800);
   }
 
   .game__buffer {

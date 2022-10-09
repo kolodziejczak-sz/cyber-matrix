@@ -63,7 +63,7 @@ export const Sequences = ({ className }: Props) => {
   );
 
   const view = (
-    <div class={`${className} sequences cut-border`}>
+    <div class={`${className} sequences cut-top-border`}>
       <div class="sequences__header">
         Sequence required to upload
       </div>
@@ -126,7 +126,7 @@ export const Sequences = ({ className }: Props) => {
     cells = cells.filter(c => !rowCells.includes(c));
 
     const sequence = rows[rowIndex];
-    sequence.classList.add(result ? succeedClass : failedClass);
+    sequence.classList.add(result ? succeedClass : failedClass, 'cut-bottom-border');
     sequence.prepend(
       <div class='sequences__status'>
         {result ? 'Success' : 'Failed'}

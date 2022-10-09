@@ -8,10 +8,16 @@ import { Matrix } from '@/components/Game/components/Matrix';
 import { Sequences } from '@/components/Game/components/Sequences';
 
 import './Game.css';
+import { GameSettings } from './types';
 
-export const Game = () => {
+type GameProps = {
+  settings?: GameSettings;
+};
+
+export const Game = ({
+  settings = getSettings()
+}: GameProps) => {
   const eventBus = new EventTarget();
-  const settings = getSettings()
   const matrix = getMatrix(settings.matrixSettings.rowLength); 
   const sequences = getSequences(matrix, settings);
 

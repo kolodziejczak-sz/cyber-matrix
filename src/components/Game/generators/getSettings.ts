@@ -4,11 +4,11 @@ import { GameSettings } from '@/components/Game/types';
 export const getSettings = () => {
   const controllerQuery = window.matchMedia('(pointer: coarse)');
   const bufferLength = getRandomInteger(4, 6);
-  const matrixLength = getRandomInteger(5, 7);
+  const matrixLength = getRandomInteger(4, 6);
 
   const sequenceCount = 3;
   const sequencesSettings = Array.from({ length: sequenceCount }).map(() => {
-    const length = getRandomInteger(2, bufferLength - 1);
+    const length = getRandomInteger(2, bufferLength);
     const points = ((length - 1) * 100) * (length * 0.25);
 
     return { length, points };
