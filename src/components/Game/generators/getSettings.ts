@@ -8,8 +8,7 @@ export const getSettings = () => {
   const matrixLength = getRandomInteger(4, 6);
 
   const sequenceLengthGenerator = uniqueIterator(() => getRandomInteger(2, bufferLength));
-  const sequenceCount = 3;
-  const sequencesSettings = Array.from({ length: sequenceCount }).map(() => {
+  const sequencesSettings = Array.from({ length: 3 }).map(() => {
     const length = sequenceLengthGenerator.next();
     const points = ((length - 1) * 100) * (length * 0.25);
 
@@ -17,7 +16,7 @@ export const getSettings = () => {
   });
 
   const timerDuration = sequencesSettings.reduce(
-    (sum, sequence) => sum + (sequence.points * 110), 0
+    (sum, sequence) => sum + (sequence.points * 63), 0
   );
 
   const gameSettings: GameSettings = {

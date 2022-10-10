@@ -73,7 +73,7 @@
 }
 
 .sequences__cell--highlight {
-  box-shadow: 0 0 6px 2px var(--secondary-200);
+  box-shadow: 0 0 4px 2px var(--secondary-200);
   color: var(--secondary-200);
 }
 

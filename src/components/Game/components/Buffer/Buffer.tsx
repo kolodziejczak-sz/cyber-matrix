@@ -6,11 +6,8 @@ import { CellData } from '@/components/Game/types';
 
 import './Buffer.css';
 
-type Props = {
-  className: string;
-}
 
-export const Buffer = ({ className }: Props) => {
+export const Buffer = () => {
   const { eventBus, settings } = getContext();
   const { bufferSettings: { length } } = settings;
 
@@ -19,7 +16,7 @@ export const Buffer = ({ className }: Props) => {
   });
 
   const view = (
-    <div class={`${className} buffer`}>
+    <div class="buffer">
       <div>Buffer</div>
       <div class="buffer__cells">
         {bufferCells}

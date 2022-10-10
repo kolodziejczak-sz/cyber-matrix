@@ -1,5 +1,3 @@
-import './Button.css';
-
 type ButtonProps = {
   className?: string;
   text: string;
@@ -8,7 +6,7 @@ type ButtonProps = {
 
 export const Button = ({ className, onClick, text }: ButtonProps) => {
   const button = (
-    <button class={`${className} btn cut-bottom-border`}>{text}</button>
+    <button class={className}>{text}</button>
   );
   button.onclick = onClick;
 
