@@ -1,21 +1,23 @@
 import { getRandomInteger } from '@/components/Game/generators/getRandomInteger';
 import { GameSettings } from '@/components/Game/types';
+import { uniqueIterator } from '@/components/Game/utils/uniqueIterator';
 
 export const getSettings = () => {
   const controllerQuery = window.matchMedia('(pointer: coarse)');
   const bufferLength = getRandomInteger(4, 6);
   const matrixLength = getRandomInteger(4, 6);
 
+  const sequenceLengthGenerator = uniqueIterator(() => getRandomInteger(2, bufferLength));
   const sequenceCount = 3;
   const sequencesSettings = Array.from({ length: sequenceCount }).map(() => {
-    const length = getRandomInteger(2, bufferLength);
+    const length = sequenceLengthGenerator.next();
     const points = ((length - 1) * 100) * (length * 0.25);
 
     return { length, points };
   });
 
   const timerDuration = sequencesSettings.reduce(
-    (acc, sequence) => acc + (sequence.points * 110), 0
+    (sum, sequence) => sum + (sequence.points * 110), 0
   );
 
   const gameSettings: GameSettings = {

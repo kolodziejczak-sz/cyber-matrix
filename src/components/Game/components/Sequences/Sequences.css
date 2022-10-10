@@ -1,12 +1,13 @@
 .sequences {
   --border-color: var(--primary-100);
 
+  border: 1px solid var(--primary-100);
   color: var(--gray-100);
 }
 
 .sequences__header {
   color: var(--primary-100);
-  padding: var(--size-100) var(--size-400);
+  padding: var(--size-100) var(--size-500);
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -36,6 +37,7 @@
 .sequences__cursor,
 .sequences__item {
   align-items: center;
+  background: transparent;
   display: grid;
   gap: var(--size-200);
   grid-template-columns: repeat(var(--sequences-size), var(--buffer-cell-size));
@@ -43,16 +45,14 @@
 }
 
 .sequences__item {
-  --border-color: transparent;
-
-  font-size: var(--size-300);
+  font-size: var(--size-400);
   position: relative;
 }
 
 .sequences__details {
   display: flex;
   flex-direction: column;
-  line-height: var(--size-400);
+  line-height: var(--size-500);
   grid-column: calc(var(--sequences-size) + 1);
   padding: var(--size-100);
   width: fit-content;
@@ -93,6 +93,7 @@
 .sequences__status,
 .sequences__status ~ * * {
   color: var(--bg-color);
+  transition: color 250ms;
 }
 
 .sequences__item--success::before {

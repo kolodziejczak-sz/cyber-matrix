@@ -3,6 +3,13 @@ export type Matrix = {
   rowLength: number;
 };
 
+export type CellData = {
+  symbol: string;
+  row: number;
+  column: number;
+  disabled?: string;
+}
+
 export type Direction = 'row' | 'column';
 
 export type Scope = ScopeSettings;

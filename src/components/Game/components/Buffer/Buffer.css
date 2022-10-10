@@ -9,7 +9,7 @@
   display: flex;
   padding: var(--size-200);
   border: 1px solid currentColor;
-  font-size: var(--size-300);
+  font-size: var(--size-400);
   gap: var(--size-200);
   width: fit-content;
 }

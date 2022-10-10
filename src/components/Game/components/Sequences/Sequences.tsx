@@ -1,8 +1,9 @@
 import { classNameEffect } from '@/components/Game/utils/classNameEffect';
 import { defer } from '@/components/Game/utils/defer';
 import { effect } from '@/components/Game/utils/effect';
-import { getContext } from '@/components/Game/context';
 import { findCell } from '@/components/Game/utils/findCell';
+import { CellData } from '@/components/Game/types';
+import { getContext } from '@/components/Game/context';
 
 import './Sequences.css';
 
@@ -75,7 +76,7 @@ export const Sequences = ({ className }: Props) => {
   const highlightClass = 'sequences__cell--highlight';
   const succeedClass = 'sequences__item--success';
   const failedClass = 'sequences__item--fail';
-  const sequencesStatus = sequences.map(() => undefined);
+  const sequencesStatus = sequences.map(() => null);
   const selectedMatrixSymbols = [];
   let cursorIndex = 0;
 
@@ -133,7 +134,7 @@ export const Sequences = ({ className }: Props) => {
       </div>
     );
 
-    const isGameEnd = sequencesStatus.every(status => status !== undefined);
+    const isGameEnd = sequencesStatus.every(status => status !== null);
     if (isGameEnd) {
       // Defer the game-end event for the buffer animations.
       defer(() => {
@@ -157,7 +158,7 @@ export const Sequences = ({ className }: Props) => {
   /**
    * Highlight a sequence symbol that is being currently highlighted in the matrix.
    */
-  const handleMatrixCellHightlight = effect((event: CustomEvent) => {
+  const handleMatrixCellHightlight = effect((event: CustomEvent<CellData | null>) => {
     const { symbol, disabled } = event.detail || {};
     if (!symbol || disabled) return;
 
@@ -172,7 +173,7 @@ export const Sequences = ({ className }: Props) => {
    * highlight a selected symbol in sequences,
    * move the cursor and rows if possible.
    */
-  const handleBufferUpdate = (event: CustomEvent) => {
+  const handleBufferUpdate = (event: CustomEvent<string>) => {
     const bufferLastSymbol = event.detail;
     selectedMatrixSymbols.push(bufferLastSymbol);
 
@@ -248,7 +249,11 @@ export const Sequences = ({ className }: Props) => {
   eventBus.addEventListener('game-end', () => {
     abortController.abort();
 
-    eventBus.dispatchEvent(new CustomEvent('sequences-status', { detail: sequencesStatus }));
+    defer(() => {
+      eventBus.dispatchEvent(
+        new CustomEvent('sequences-status', { detail: sequencesStatus })
+      );
+    });
   },  { once: true });
 
   return view;

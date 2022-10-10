@@ -2,6 +2,7 @@ import { getContext } from '@/components/Game/context';
 import { classNameEffect } from '@/components/Game/utils/classNameEffect';
 import { defer } from '@/components/Game/utils/defer';
 import { effect } from '@/components/Game/utils/effect';
+import { CellData } from '@/components/Game/types';
 
 import './Buffer.css';
 
@@ -51,11 +52,21 @@ export const Buffer = ({ className }: Props) => {
     return classNameEffect(cursorClass, cell);
   });
 
+  /**
+   * Removes the cursor animation.
+   */
+  const removeCursor = () => {
+    const cell = bufferCells[bufferCursor];
+    if (!cell) return;
+
+    cell.classList.remove(cursorClass);
+  };
+
 
   /**
    * A cell in the matrix has been selected. Populate the buffer with the selected cell symbol and move the cursor forward.
    */
-  const handleMatrixCellSelect = (event: CustomEvent) => {
+  const handleMatrixCellSelect = (event: CustomEvent<CellData | null>) => {
     const { symbol } = event.detail;
     const cellToPopulate = bufferCells[bufferCursor];
 
@@ -69,7 +80,7 @@ export const Buffer = ({ className }: Props) => {
   /**
    * Highlight a sequence symbol that is being currently highlighted in the matrix.
    */
-  const handleMatrixCellHightlight = effect((event: CustomEvent) => {
+  const handleMatrixCellHightlight = effect((event: CustomEvent<CellData | null>) => {
     const { symbol, disabled } = event.detail || {};
     if (!symbol || disabled) {
       return;
@@ -95,7 +106,10 @@ export const Buffer = ({ className }: Props) => {
 
   eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
   eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
-  eventBus.addEventListener('game-end', () => abortController.abort(), { once: true });
+  eventBus.addEventListener('game-end', () => {
+    removeCursor();
+    abortController.abort()
+  }, { once: true });
 
   return view;
 }

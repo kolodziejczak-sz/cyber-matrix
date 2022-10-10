@@ -1,32 +1,32 @@
 .game {
-  --matrix-cell-size: var(--size-700);
-  --buffer-cell-size: var(--size-600);
+  --matrix-cell-size: var(--size-800);
+  --buffer-cell-size: var(--size-700);
 
   align-items: start;
   display: grid;
-  gap: var(--size-300);
+  gap: var(--size-400);
   grid-template:
     'timer'
     'buffer'
     'sequences'
     'matrix'
     'exit';
-  margin: var(--size-300) auto;
-  width: min(calc(100% - var(--size-300)), 1140px);
+  margin: var(--size-400) auto;
+  width: min(calc(100% - var(--size-400)), 50rem);
 }
 
-@media only screen and (min-width: 1140px) {
+@media only screen and (min-width: 50rem) {
   .game {
-    gap: var(--size-600);
+    gap: var(--size-700);
     grid-template:
       'timer buffer'
       'matrix sequences'
       'exit exit';
-    margin-block: var(--size-800);
+    margin-block: var(--size-900);
   }
 
   .game__buffer {
-    margin-block-start: calc(-1 * var(--size-600));
+    margin-block-start: calc(-1 * var(--size-700));
   }
 }
 
@@ -40,9 +40,10 @@
   --border-color: var(--secondary-100);
 
   background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
   color: var(--secondary-200);
-  font-size: var(--size-300);
-  margin-block-end: var(--size-300);
+  font-size: var(--size-400);
+  margin-block-end: var(--size-400);
   place-self: end;
 }
 

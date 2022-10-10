@@ -11,8 +11,8 @@
   align-items: center;
   border: 1px solid currentColor;
   margin-inline-start: auto;
-  width: calc(5 * var(--size-300));
-  height: var(--size-600);
+  width: calc(5 * var(--size-400));
+  height: var(--size-700);
 }
 
 .timer__animation {

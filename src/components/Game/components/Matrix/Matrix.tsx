@@ -120,7 +120,7 @@ export const Matrix = ({ className }: Props) => {
   /**
    * A user hovers over a symbol in a sequence. Highlight all cells containing the symbol.
    */
-  const handleSymbolSearch = effect((event: CustomEvent) => {
+  const handleSymbolSearch = effect((event: CustomEvent<string>) => {
     const symbol = event.detail;
     if (!symbol) return;
 

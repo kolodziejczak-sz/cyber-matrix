@@ -8,7 +8,7 @@ type ButtonProps = {
 
 export const Button = ({ className, onClick, text }: ButtonProps) => {
   const button = (
-    <button class={`${className} button cut-bottom-border`}>{text}</button>
+    <button class={`${className} btn cut-bottom-border`}>{text}</button>
   );
   button.onclick = onClick;
 
