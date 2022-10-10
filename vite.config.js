@@ -8,6 +8,11 @@ export default defineConfig({
     port: 3000,
     host: true,
   },
+  build: {
+    target: 'esnext',
+    modulePreload: false,
+    polyfillModulePreload: false,
+  },
   esbuild: {
     jsxFactory: 'h',
     jsxInject: `import { jsx } from '@/jsx';`,
