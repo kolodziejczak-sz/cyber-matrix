@@ -61,7 +61,7 @@ export const Matrix = ({ className }: Props) => {
    */
   const getCellToHighlight = (event: Event) => {
     const { row, column } = (event.target as HTMLElement).dataset;
-    if (event.type === 'focusout' || (!row && !column)) return;
+    if (event.type.endsWith('out') || (!row && !column)) return;
 
     const { direction, index } = scope.getValue();
 
@@ -108,6 +108,7 @@ export const Matrix = ({ className }: Props) => {
    * A user hovers over a symbol in the matrix. Highlight a cell in the scope range.
    */
   const handleHover = effect((event: Event) => {
+    console.log(event.type, (event.target as any).dataset);
     const cellToHighlight = getCellToHighlight(event);
     const matrixHighlightEvent = new CustomEvent('cell-highlight', { detail: cellToHighlight?.dataset });
     eventBus.dispatchEvent(matrixHighlightEvent);
@@ -138,6 +139,7 @@ export const Matrix = ({ className }: Props) => {
     cellsContainer.addEventListener('dblclick', handleSelect, { signal });
   } else {
     cellsContainer.addEventListener('mouseover', handleHover, { signal });
+    cellsContainer.addEventListener('mouseout', handleHover, { signal });
     cellsContainer.addEventListener('click', handleSelect, { signal });
   }
 

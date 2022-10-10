@@ -149,7 +149,7 @@ export const Sequences = ({ className }: Props) => {
    */
   const handleSymbolQuery = (event: Event) => {
     const target = event.target as HTMLElement;
-    const symbol = event.type === 'focusout' ? null : target.dataset.symbol;
+    const symbol = event.type.endsWith('out')  ? null : target.dataset.symbol;
     const symbolSearchEvent = new CustomEvent('symbol-search', { detail: symbol });
 
     eventBus.dispatchEvent(symbolSearchEvent);
@@ -242,6 +242,7 @@ export const Sequences = ({ className }: Props) => {
     list.addEventListener('focusout', handleSymbolQuery, { signal });
   } else {
     list.addEventListener('mouseover', handleSymbolQuery, { signal });
+    list.addEventListener('mouseout', handleSymbolQuery, { signal });
   }
 
   eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
