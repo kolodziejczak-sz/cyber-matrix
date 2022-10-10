@@ -21,7 +21,7 @@ export const getSequences = (
     return dir;
   };
 
-  return sequencesSettings.map<Sequence>(({ length, points }) => {
+  return sequencesSettings.map<Sequence>(({ length, points }, sequenceIdx) => {
     const sequenceSymbols: string[] = [];
     const usedIndexes: number[] = [];
     const bufferMaxOffset = bufferLength - length;
@@ -38,8 +38,9 @@ export const getSequences = (
 
       usedIndexes.push(symbolIndex);
       sequenceSymbols.push(symbols[symbolIndex]);
-      dir = getNextDirection(dir);
+
       idx = query[dir];
+      dir = getNextDirection(dir);
     }
 
     return {
