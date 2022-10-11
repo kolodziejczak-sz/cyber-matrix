@@ -1,6 +1,6 @@
+import { Matrix, Sequences, Sequence, GameSettings, Direction, SequenceSettings } from '@/components/Game/types';
 import { getRandomInteger } from '@/components/Game/generators/getRandomInteger';
 import { getNextDirection } from '@/components/Game/generators/getNextDirection';
-import { Matrix, Sequences, Sequence, GameSettings, Direction } from '@/components/Game/types';
 
 export const getSequences = (
   matrix: Matrix,
@@ -16,16 +16,12 @@ export const getSequences = (
 
   const getRandomDir = (initialDir: Direction, range: number) => {
     const offset = getRandomInteger(0, range);
+    const shouldChangeDir = Boolean(offset % 2);
 
-    let dir = initialDir;
-    for (let i = 0; i < offset; i++) {
-      dir = getNextDirection(dir);
-    }
-
-    return dir;
+    return shouldChangeDir ? getNextDirection(initialDir) : initialDir;
   };
 
-  return sequencesSettings.map<Sequence>(({ length, points, name }) => {
+  const createSequence = ({ length, points, name }: SequenceSettings) => {
     const sequenceSymbols: string[] = [];
     const usedIndexes: number[] = [];
     const bufferMaxOffset = bufferLength - length;
@@ -54,5 +50,24 @@ export const getSequences = (
       points,
       symbols: sequenceSymbols
     };
+  };
+
+  const sequences = [];
+
+  const isDuplication = (sequenceToValidate: Sequence) => {
+    return sequences.some((sequence: Sequence) => (
+      sequence.symbols.join('') === sequenceToValidate.symbols.join('')
+    ));
+  };
+
+  sequencesSettings.forEach((sequenceSetting: SequenceSettings) => {
+    let sequence: Sequence;
+    do {
+      sequence = createSequence(sequenceSetting)
+    } while (isDuplication(sequence))
+
+    sequences.push(sequence);
   });
+
+  return sequences;
 };
