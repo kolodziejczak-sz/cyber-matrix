@@ -44,7 +44,7 @@
 
 /**
   Sequences & buffer styles.
-  "buffer-content-size" creates a visual gap, even though there's no gap between elements.
+  The "buffer-content-size" var is ued to create a visual gap, there's no gap between elements.
   No gap is required to avoid flickering between mouse events: element -> gap -> element.
 */
 .buffer__cell,

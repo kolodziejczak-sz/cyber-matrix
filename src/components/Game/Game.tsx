@@ -15,12 +15,12 @@ import './Game.css';
 
 type Props = {
   settings?: GameSettings;
-  onGameEnd?: (reason: string, gameEndStatus: GameEndStatus) => void;
+  onEnd: (reason: string, gameEndStatus: GameEndStatus) => void;
 };
 
 export const Game = ({
   settings = getSettings(),
-  onGameEnd,
+  onEnd,
 }: Props) => {
   const eventBus = new EventTarget();
   const matrix = getMatrix(settings.matrixSettings.rowLength); 
@@ -45,7 +45,7 @@ export const Game = ({
         succeed: Boolean(sequencesStatus[sequenceIndex]),
     }));
 
-    onGameEnd(reason, gameEndStatus);
+    onEnd(reason, gameEndStatus);
   }, { once: true })
 
   return (
