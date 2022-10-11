@@ -1,7 +1,7 @@
 .timer {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: var(--size-100);
+  gap: var(--size-200);
   position: relative;
 }
 
@@ -23,7 +23,6 @@
   grid-column: 1 / -1;
   height: var(--size-100);
   background-color: currentColor;
-  margin-block-start: var(--size-200);
 }
 
 .timer__animation::before {
@@ -41,4 +40,3 @@
   0% { width: 100% }
   100% { width: 0% }
 }
-

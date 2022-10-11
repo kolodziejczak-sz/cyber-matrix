@@ -14,7 +14,6 @@
 .sequences__list {
   display: flex;
   flex-direction: column;
-  gap: var(--size-100);
   list-style: none;
   padding: var(--size-200);
   position: relative;
@@ -30,7 +29,8 @@
   height: 100%;
   position: absolute;
   top: 0;
-  width: var(--buffer-cell-size);
+  width: var(--buffer-content-size);
+  margin: 0 calc((var(--buffer-cell-size) - var(--buffer-content-size)) / 2);
   z-index: -1;
 }
 
@@ -39,7 +39,6 @@
   align-items: center;
   background: transparent;
   display: grid;
-  gap: var(--size-200);
   grid-auto-flow: column;
   grid-template-columns: repeat(var(--sequences-size), var(--buffer-cell-size));
 }
@@ -65,17 +64,10 @@
 }
 
 .sequences__cell {
-  align-items: center;
-  border: 1px solid transparent;
-  display: flex;
-  justify-content: center;
-  height: var(--buffer-cell-size);
-  width: var(--buffer-cell-size);
+  height: 100%;
 }
 
 .sequences__cell--selected {
-  animation: selection 500ms ease-in-out;
-  border-color: currentColor;
   color: var(--primary-100);
 }
 
@@ -112,7 +104,5 @@
 
 @keyframes rollIn {
   0% { transform: translateY(-75%);}
-  100% { transform: translateY(0%);}
+  100% { transform: translateY(-5%);}
 }
-
-

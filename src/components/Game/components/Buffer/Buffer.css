@@ -7,35 +7,27 @@
 
 .buffer__cells {
   display: flex;
-  padding: var(--size-200);
+  padding: calc((var(--buffer-cell-size) - var(--buffer-content-size)));
   border: 1px solid currentColor;
   font-size: var(--size-400);
-  gap: var(--size-200);
   width: fit-content;
 }
 
 .buffer__cell {
-  align-items: center;
-  border: 1px dashed currentColor;
-  display: flex;
-  height: var(--buffer-cell-size);
-  justify-content: center;
   position: relative;
-  width: var(--buffer-cell-size);
 }
 
-.buffer__cell--selected {
-  animation: selection 500ms ease-in-out;
-  border-style: solid;
+.buffer__cell::after {
+  border: 1px dashed currentColor;
 }
 
 .buffer__cell--cursor::before {
   animation: cursor 1s infinite steps(2);
   content: '';
   position: absolute;
-  width: 100%;
+  width: var(--buffer-content-size);
   height: 2px;
-  bottom: 0px;
+  bottom: calc((var(--buffer-cell-size) - var(--buffer-content-size)) / 2);
   background-color: var(--primary-100);
 }
 

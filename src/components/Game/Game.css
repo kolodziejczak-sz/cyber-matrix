@@ -1,6 +1,7 @@
 .game {
-  --matrix-cell-size: var(--size-800);
+  --matrix-cell-size: var(--size-900);
   --buffer-cell-size: var(--size-700);
+  --buffer-content-size: var(--size-600);
 
   align-items: start;
   display: grid;
@@ -41,18 +42,50 @@
   outline: none;
 }
 
+/**
+  Sequences & buffer shared styles.
+  "buffer-content-size" creates a visual gap, even though there's no gap between elements.
+  No gap is required to avoid flickering between mouse events: element -> gap -> element.
+*/
+.buffer__cell,
+.sequences__cell {
+  align-items: center;
+  display: flex;
+  height: var(--buffer-cell-size);
+  justify-content: center;
+  width: var(--buffer-cell-size);
+}
+
+.buffer__cell::after,
+.sequences__cell::after {
+  content: '';
+  display: block;
+  height: var(--buffer-content-size);
+  position: absolute;
+  width: var(--buffer-content-size);
+}
+
+.buffer__cell--selected::after,
+.sequences__cell--selected::after {
+  animation: selection 500ms ease-in-out;
+  border: 1px solid currentColor;
+}
+
 .highlight {
-  border-color: transparent;
   color: var(--secondary-200);
   position: relative;
-  box-shadow: 0 0 4px 2px var(--secondary-200);
+}
+
+.highlight::after {
+  border: none;
+  box-shadow: 0 0 10px 4px var(--secondary-200);
 }
 
 @keyframes selection {
   0%, 50% {
     background-color: var(--secondary-200);
-    color: var(--secondary-200);
     border-color: currentColor;
+    color: var(--secondary-200);
   }
 }
 
