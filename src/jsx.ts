@@ -15,7 +15,11 @@ export const jsx = (
   if (attributes) {
     for (let key in attributes) {
       const attribute = attributes[key];
-      el.setAttribute(key, attribute);
+      if (typeof attribute === 'string') {
+        el.setAttribute(key, attribute);
+      } else {
+        el[key] = attribute;
+      }
     }
   }
 

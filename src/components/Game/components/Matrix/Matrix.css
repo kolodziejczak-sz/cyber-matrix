@@ -30,6 +30,10 @@
   width: var(--matrix-cell-size);
 }
 
+.matrix__cell:hover {
+  cursor: pointer;
+}
+
 .matrix__cell--query {
   outline: 1px solid var(--primary-100);
   outline-offset: -4px;
@@ -83,7 +87,7 @@
 @keyframes glow {
   50% {
     box-shadow:
-      0 0 12px 8px var(--secondary-300),
+      0 0 12px 10px var(--secondary-300),
       inset 0 0 0 1px var(--secondary-200),
       inset 0 0 0 3px var(--bg-color),
       inset 0 0 0 4px var(--secondary-200);

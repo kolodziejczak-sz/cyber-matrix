@@ -8,11 +8,12 @@ export const getSettings = () => {
   const matrixLength = getRandomInteger(4, 6);
 
   const sequenceLengthGenerator = uniqueIterator(() => getRandomInteger(2, bufferLength));
-  const sequencesSettings = Array.from({ length: 3 }).map(() => {
+  const sequencesSettings = Array.from({ length: 3 }).map((_, index) => {
     const length = sequenceLengthGenerator.next();
     const points = ((length - 1) * 100) * (length * 0.25);
+    const name = `Datamine_V${index}` 
 
-    return { length, points };
+    return { length, name, points };
   });
 
   const timerDuration = sequencesSettings.reduce(

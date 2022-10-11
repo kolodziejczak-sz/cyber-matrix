@@ -14,10 +14,13 @@ export type Direction = 'row' | 'column';
 
 export type Scope = ScopeSettings;
 
+export type GameEndStatus = (Sequence & { succeed: boolean; })[];
+
 export type Sequence = {
   length: number;
   points: number;
   symbols: string[];
+  name: string;
 }
 
 export type Sequences = Sequence[];
@@ -35,7 +38,7 @@ export type MatrixSettings = { rowLength: number };
 
 export type BufferSettings = { length: number };
 
-export type SequenceSettings = { length: number; points: number };
+export type SequenceSettings = { length: number; points: number, name: string };
 
 export type SequencesSettings = SequenceSettings[];
 

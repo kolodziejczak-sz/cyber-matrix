@@ -13,7 +13,7 @@ declare namespace JSX {
   type Attributes = Partial<{
     class: string;
     style: string;
-    open: boolean;
+    onclick: typeof onclick;
     [key: string]: any;
   }>;
 

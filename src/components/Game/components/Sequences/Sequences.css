@@ -26,11 +26,11 @@
 
 .sequences__cursor > *::before {
   background: var(--gray-400);
-  width: var(--buffer-cell-size);
-  height: 100%;
   content: '';
-  top: 0;
+  height: 100%;
   position: absolute;
+  top: 0;
+  width: var(--buffer-cell-size);
   z-index: -1;
 }
 
@@ -40,8 +40,8 @@
   background: transparent;
   display: grid;
   gap: var(--size-200);
-  grid-template-columns: repeat(var(--sequences-size), var(--buffer-cell-size));
   grid-auto-flow: column;
+  grid-template-columns: repeat(var(--sequences-size), var(--buffer-cell-size));
 }
 
 .sequences__item {
@@ -52,8 +52,9 @@
 .sequences__details {
   display: flex;
   flex-direction: column;
+  font-size: var(--size-300);
+  grid-column: calc(var(--sequences-size) + 2);
   line-height: var(--size-500);
-  grid-column: calc(var(--sequences-size) + 1);
   padding: var(--size-100);
   width: fit-content;
 }
@@ -70,11 +71,6 @@
   justify-content: center;
   height: var(--buffer-cell-size);
   width: var(--buffer-cell-size);
-}
-
-.sequences__cell--highlight {
-  box-shadow: 0 0 4px 2px var(--secondary-200);
-  color: var(--secondary-200);
 }
 
 .sequences__cell--selected {
@@ -113,7 +109,6 @@
   height: 100%;
   z-index: -1;
 }
-
 
 @keyframes rollIn {
   0% { transform: translateY(-75%);}

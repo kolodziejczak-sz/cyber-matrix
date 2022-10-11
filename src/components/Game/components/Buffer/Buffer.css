@@ -29,12 +29,6 @@
   border-style: solid;
 }
 
-.buffer__cell--highlight {
-  border-color: transparent;
-  box-shadow: 0 0 4px 2px var(--secondary-200);
-  color: var(--secondary-200);
-}
-
 .buffer__cell--cursor::before {
   animation: cursor 1s infinite steps(2);
   content: '';

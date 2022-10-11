@@ -25,7 +25,7 @@ export const getSequences = (
     return dir;
   };
 
-  return sequencesSettings.map<Sequence>(({ length, points }) => {
+  return sequencesSettings.map<Sequence>(({ length, points, name }) => {
     const sequenceSymbols: string[] = [];
     const usedIndexes: number[] = [];
     const bufferMaxOffset = bufferLength - length;
@@ -50,6 +50,7 @@ export const getSequences = (
 
     return {
       length,
+      name,
       points,
       symbols: sequenceSymbols
     };
