@@ -108,7 +108,6 @@ export const Matrix = ({ className }: Props) => {
    * A user hovers over a symbol in the matrix. Highlight a cell in the scope range.
    */
   const handleHover = effect((event: Event) => {
-    console.log(event.type, (event.target as any).dataset);
     const cellToHighlight = getCellToHighlight(event);
     const matrixHighlightEvent = new CustomEvent('cell-highlight', { detail: cellToHighlight?.dataset });
     eventBus.dispatchEvent(matrixHighlightEvent);
