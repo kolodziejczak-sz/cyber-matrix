@@ -25,7 +25,7 @@ export const Buffer = () => {
   );
 
   const cursorClass = 'buffer__cell--cursor';
-  const highlightClass = 'highlight';
+  const highlightClass = 'buffer__cell--highlight';
   const selectedClass = 'buffer__cell--selected';
   let bufferCursor = -1;
 

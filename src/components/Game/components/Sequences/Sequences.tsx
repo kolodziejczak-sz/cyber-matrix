@@ -72,7 +72,7 @@ export const Sequences = ({ className }: Props) => {
     </div>
   );
 
-  const highlightClass = 'highlight';
+  const highlightClass = 'sequences__cell--highlight';
   const selectedClass = 'sequences__cell--selected';
   const succeedClass = 'sequences__item--success';
   const failedClass = 'sequences__item--fail';

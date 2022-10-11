@@ -43,7 +43,7 @@
 }
 
 /**
-  Sequences & buffer shared styles.
+  Sequences & buffer styles.
   "buffer-content-size" creates a visual gap, even though there's no gap between elements.
   No gap is required to avoid flickering between mouse events: element -> gap -> element.
 */
@@ -71,12 +71,14 @@
   border: 1px solid currentColor;
 }
 
-.highlight {
+.buffer__cell--highlight,
+.sequences__cell--highlight {
   color: var(--secondary-200);
   position: relative;
 }
 
-.highlight::after {
+.buffer__cell--highlight::after,
+.sequences__cell--highlight::after {
   border: none;
   box-shadow: 0 0 10px 4px var(--secondary-200);
 }
