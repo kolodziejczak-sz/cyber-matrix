@@ -100,11 +100,12 @@ const minify = async () => {
     const replaceStrings = (node) => {
       const isLiteral = node.type === 'Literal';
       const valueAccesor = isLiteral ? 'value' : 'raw';
-      if (typeof node[valueAccesor] !== 'string') {
+      const value = node[valueAccesor];
+      if (typeof value !== 'string') {
         return;
       }
 
-      const valueWords = node[valueAccesor].split(' ');
+      const valueWords = value.split(' ');
       const nextValue = valueWords.map(w => {
         if (namesMap.has(w)) {
           return namesMap.get(w);
@@ -124,7 +125,8 @@ const minify = async () => {
       }).join(' ');
 
       if (isLiteral) {
-        node.raw = '"' + nextValue + '"';
+        console.log({value, nextValue})
+        node.raw = '\'' + nextValue + '\'';
       } else {
         node.raw = nextValue;
       }

@@ -13,12 +13,13 @@
   width: fit-content;
 }
 
-.buffer__cell {
-  position: relative;
-}
 
 .buffer__cell::after {
   border: 1px dashed currentColor;
+}
+
+.buffer__cell--highlight::after {
+  border-color: transparent;
 }
 
 .buffer__cell--cursor::before {

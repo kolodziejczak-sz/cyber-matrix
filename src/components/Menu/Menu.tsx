@@ -17,14 +17,14 @@ export const Menu = ({ onStart }: Props) => {
         </header>
         <main class="menu__options">
           <button
-            class="menu__option cut-bottom-border"
+            class="option cut-bottom-corner"
             onclick={onStart}
           >
             Start
           </button>
           <a
             href={howToPlayLink}
-            class="menu__option menu__option--secondary cut-bottom-border"
+            class="option option--secondary cut-bottom-corner"
             target="_blank"
           >
             How to play &#8599;

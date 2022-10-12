@@ -11,8 +11,6 @@
     'buffer-exit'
     'sequences'
     'matrix';
-  margin: var(--size-400) auto;
-  width: min(calc(100% - var(--size-400)), 50rem);
 }
 
 @media only screen and (min-width: 50rem) {
@@ -21,7 +19,7 @@
     grid-template:
       'timer buffer-exit'
       'matrix sequences';
-    margin-block: var(--size-900);
+    padding-block-start: var(--size-100);
   }
 
   .game__buffer-and-exit {
@@ -54,6 +52,11 @@
   height: var(--buffer-cell-size);
   justify-content: center;
   width: var(--buffer-cell-size);
+  position: relative;
+}
+
+.sequences__cell {
+  height: 100%;
 }
 
 .buffer__cell::after,
@@ -74,12 +77,10 @@
 .buffer__cell--highlight,
 .sequences__cell--highlight {
   color: var(--secondary-200);
-  position: relative;
 }
 
 .buffer__cell--highlight::after,
 .sequences__cell--highlight::after {
-  border: none;
   box-shadow: 0 0 10px 4px var(--secondary-200);
 }
 

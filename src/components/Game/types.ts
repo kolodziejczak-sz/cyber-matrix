@@ -14,7 +14,10 @@ export type Direction = 'row' | 'column';
 
 export type Scope = ScopeSettings;
 
-export type GameEndStatus = (Sequence & { succeed: boolean; })[];
+export type GameEndData = {
+  reason: string;
+  sequences: (Sequence & { succeed: boolean; })[];
+}
 
 export type Sequence = {
   length: number;
@@ -53,7 +56,7 @@ export type GameSettings = {
   timerSettings: TimerSettings;
 };
 
-export type Context = {
+export type GameData = {
   eventBus: EventTarget;
   matrix: Matrix;
   sequences: Sequences;

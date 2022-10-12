@@ -20,7 +20,7 @@ export const Sequences = ({ className }: Props) => {
   );
 
   let cells: HTMLElement[] = [];
-  const rows = sequences.map(({ symbols, points }, rowIndex) => (
+  const rows = sequences.map(({ points, name, symbols }, rowIndex) => (
     <li class="sequences__item">
       {symbols.map((symbol, columnIndex) => {
         const cell = (
@@ -39,7 +39,7 @@ export const Sequences = ({ className }: Props) => {
         return cell;
       })}
       <div class="sequences__details">
-        <span class="sequences__name">DATAMINE_V{rowIndex}</span>
+        <span class="sequences__name">{name}</span>
         <span class="sequences__value">
           {points}points
         </span>
@@ -64,7 +64,7 @@ export const Sequences = ({ className }: Props) => {
   );
 
   const view = (
-    <div class={`${className} sequences cut-top-border`}>
+    <div class={`${className} sequences cut-top-corner`}>
       <div class="sequences__header">
         Sequence required to upload
       </div>
@@ -127,7 +127,7 @@ export const Sequences = ({ className }: Props) => {
     cells = cells.filter(c => !rowCells.includes(c));
 
     const sequence = rows[rowIndex];
-    sequence.classList.add(result ? succeedClass : failedClass, 'cut-bottom-border');
+    sequence.classList.add(result ? succeedClass : failedClass, 'cut-bottom-corner');
     sequence.prepend(
       <div class='sequences__status'>
         {result ? 'Success' : 'Failed'}
@@ -210,6 +210,8 @@ export const Sequences = ({ className }: Props) => {
           return finishSequence(rowIndex, false);
         }
 
+        /** TODO: check if any next symbol of the current sequence is within the matrix scope  */
+
         let pushCount = 1;
 
         prevCells.forEach(prevCell => {
@@ -252,7 +254,7 @@ export const Sequences = ({ className }: Props) => {
 
     defer(() => {
       eventBus.dispatchEvent(
-        new CustomEvent('sequences-status', { detail: sequencesStatus })
+        new CustomEvent('sequences-data', { detail: sequencesStatus })
       );
     });
   },  { once: true });

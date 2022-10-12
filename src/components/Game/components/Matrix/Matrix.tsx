@@ -41,7 +41,7 @@ export const Matrix = ({ className }: Props) => {
   );
 
   const view = (
-    <div class={`${className} matrix cut-top-border`}>
+    <div class={`${className} matrix cut-top-corner`}>
       <header class="matrix__header">Code Matrix</header>
       {cellsContainer}
     </div>

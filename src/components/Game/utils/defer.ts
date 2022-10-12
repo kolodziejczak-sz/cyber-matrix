@@ -1,3 +1,3 @@
-export const defer = (callback: Function) => {
-  setTimeout(() => callback());
+export const defer = (callback: Function, ms: number = 0) => {
+  setTimeout(() => callback(), ms);
 };

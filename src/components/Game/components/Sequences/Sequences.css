@@ -52,19 +52,14 @@
   display: flex;
   flex-direction: column;
   font-size: var(--size-300);
-  grid-column: calc(var(--sequences-size) + 2);
+  grid-column: calc(var(--sequences-size) + 1);
   line-height: var(--size-500);
   padding: var(--size-100);
-  width: fit-content;
 }
 
 .sequences__value {
   color: var(--primary-100);
   text-transform: lowercase;
-}
-
-.sequences__cell {
-  height: 100%;
 }
 
 .sequences__cell--selected {

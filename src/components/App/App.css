@@ -33,18 +33,14 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: clamp(1.00rem, calc(0.80rem + 0.98vw), 1.50rem);
   text-transform: uppercase;
-  word-spacing: .5ch;
 }
 
-.cut-bottom-border,
-.cut-top-border {
+.cut-bottom-corner,
+.cut-top-corner {
   --border-color: var(--bg-color);
-
-  position: relative;
-  overflow: hidden;
 }
 
-.cut-top-border {
+.cut-top-corner {
   background: linear-gradient(135deg, var(--border-color) 0 var(--size-300), transparent 0) top left / 50%;
   background-repeat: no-repeat;
   -webkit-mask: linear-gradient(135deg, transparent 0 var(--size-300), #000 0) top left;
@@ -52,11 +48,34 @@
 
 }
 
-.cut-bottom-border {
+.cut-bottom-corner {
   background: linear-gradient(-45deg, var(--border-color) 0 var(--size-300), transparent 0) bottom right / 50%;
   background-repeat: no-repeat;
   -webkit-mask: linear-gradient(-45deg, transparent 0 var(--size-300), #fff 0) bottom right;
   -webkit-mask-repeat: no-repeat;
 }
 
+.option {
+  --border-color: var(--primary-100);
 
+  border: 2px solid currentColor;
+  color: var(--border-color);
+  padding: var(--size-500);
+  text-align: start;
+  width: 100%;
+}
+
+.option--secondary {
+  --border-color: var(--gray-200);
+}
+
+#root {
+  height: 100%;
+  padding: var(--size-500);
+}
+
+@media only screen and (min-width: 50rem) {
+  #root {
+    padding: var(--size-900) var(--size-900);
+  }
+}

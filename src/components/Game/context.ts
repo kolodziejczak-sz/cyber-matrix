@@ -1,8 +1,8 @@
-import { Context } from '@/components/Game/types';
+import { GameData } from '@/components/Game/types';
 
-let context: Context;
+let context: GameData;
 
-export const getContext = (): Context => {
+export const getContext = (): GameData => {
   if (!context) {
     throw new Error('Please initialize context');
   }
@@ -10,6 +10,6 @@ export const getContext = (): Context => {
   return context;
 };
 
-export const setContext = (value: Context) => {
+export const setContext = (value: GameData) => {
   context = value;
 }

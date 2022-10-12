@@ -1,7 +1,7 @@
 import { getSettings } from '@/components/Game/generators/getSettings';
 import { getMatrix } from '@/components/Game/generators/getMatrix';
 import { getSequences } from '@/components/Game/generators/getSequences';
-import { GameEndStatus, GameSettings } from '@/components/Game/types';
+import { GameEndData } from '@/components/Game/types';
 import { setContext } from '@/components/Game/context';
 import { waitForEvent } from '@/components/Game/utils/waitForEvent';
 import { Timer } from '@/components/Game/components/Timer';
@@ -12,17 +12,13 @@ import { Exit } from '@/components/Game/components/Exit';
 
 import './Game.css';
 
-
 type Props = {
-  settings?: GameSettings;
-  onEnd: (reason: string, gameEndStatus: GameEndStatus) => void;
+  onEnd: (gameEndData: GameEndData) => void;
 };
 
-export const Game = ({
-  settings = getSettings(),
-  onEnd,
-}: Props) => {
+export const Game = ({ onEnd }: Props) => {
   const eventBus = new EventTarget();
+  const settings = getSettings();
   const matrix = getMatrix(settings.matrixSettings.rowLength); 
   const sequences = getSequences(matrix, settings);
 
@@ -39,13 +35,17 @@ export const Game = ({
 
   eventBus.addEventListener('game-end', async (event: CustomEvent<string>) => {
     const { detail: reason } = event;
-    const { detail: sequencesStatus } = await waitForEvent<CustomEvent<boolean[]>>(eventBus, 'sequences-status');
-    const gameEndStatus: GameEndStatus = sequences.map((sequence, sequenceIndex) => ({
-        ...sequence,
-        succeed: Boolean(sequencesStatus[sequenceIndex]),
-    }));
+    const { detail: sequencesData } = await waitForEvent<CustomEvent<boolean[]>>(eventBus, 'sequences-data');
 
-    onEnd(reason, gameEndStatus);
+    const gameEndData: GameEndData = {
+      reason,
+      sequences: sequences.map((sequence, sequenceIndex) => ({
+        ...sequence,
+        succeed: Boolean(sequencesData[sequenceIndex]),
+      })),
+    };
+
+    onEnd(gameEndData);
   }, { once: true })
 
   return (
