@@ -12,4 +12,4 @@ export const getContext = (): GameData => {
 
 export const setContext = (value: GameData) => {
   context = value;
-}
+};

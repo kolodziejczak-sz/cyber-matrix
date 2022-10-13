@@ -3,7 +3,7 @@ import { GameSettings } from '@/components/Game/types';
 
 export const getSettings = () => {
   const controllerQuery = window.matchMedia('(pointer: coarse)');
-  const bufferLength = getRandomInteger(4, 7);
+  const bufferLength = getRandomInteger(4, 8);
   const matrixLength = getRandomInteger(4, 6);
 
   const sequenceCount = 3;
@@ -24,7 +24,7 @@ export const getSettings = () => {
   });
 
   const timerDuration = sequencesSettings.reduce(
-    (sum, sequence) => sum + (sequence.points * 63), 0
+    (sum, sequence) => sum + (sequence.points * 43), 0
   );
 
   const gameSettings: GameSettings = {

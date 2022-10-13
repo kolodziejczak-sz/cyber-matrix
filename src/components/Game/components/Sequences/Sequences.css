@@ -6,9 +6,9 @@
 }
 
 .sequences__header {
+  border-bottom: 1px solid var(--border-color);
   color: var(--primary-100);
   padding: var(--size-100) var(--size-500);
-  border-bottom: 1px solid var(--border-color);
 }
 
 .sequences__list {
@@ -27,10 +27,10 @@
   background: var(--gray-400);
   content: '';
   height: 100%;
+  margin: 0 calc((var(--buffer-cell-size) - var(--buffer-content-size)) / 2);
   position: absolute;
   top: 0;
   width: var(--buffer-content-size);
-  margin: 0 calc((var(--buffer-cell-size) - var(--buffer-content-size)) / 2);
   z-index: -1;
 }
 
@@ -40,7 +40,7 @@
   background: transparent;
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: repeat(var(--sequences-size), var(--buffer-cell-size));
+  grid-template-columns: repeat(calc(var(--sequences-size) + 1), var(--buffer-cell-size));
 }
 
 .sequences__item {
@@ -51,10 +51,10 @@
 .sequences__details {
   display: flex;
   flex-direction: column;
-  font-size: var(--size-300);
-  grid-column: calc(var(--sequences-size) + 1);
+  grid-column: calc(var(--sequences-size) + 2);
   line-height: var(--size-500);
   padding: var(--size-100);
+  padding-inline-end: var(--size-300);
 }
 
 .sequences__value {
@@ -91,13 +91,13 @@
 .sequences__item--success::before {
   animation: rollIn 250ms forwards ease-in-out;
   content: '';
+  height: 100%;
   position: absolute;
   width: 100%;
-  height: 100%;
   z-index: -1;
 }
 
 @keyframes rollIn {
   0% { transform: translateY(-75%);}
-  100% { transform: translateY(-5%);}
+  100% { transform: translateY(-7.5%);}
 }

@@ -7,12 +7,11 @@
 
 .buffer__cells {
   display: flex;
-  padding: calc((var(--buffer-cell-size) - var(--buffer-content-size)));
   border: 1px solid currentColor;
   font-size: var(--size-400);
+  padding: calc((var(--buffer-cell-size) - var(--buffer-content-size)));
   width: fit-content;
 }
-
 
 .buffer__cell::after {
   border: 1px dashed currentColor;
@@ -24,12 +23,12 @@
 
 .buffer__cell--cursor::before {
   animation: cursor 1s infinite steps(2);
+  background-color: var(--primary-100);
+  bottom: calc((var(--buffer-cell-size) - var(--buffer-content-size)) / 2);
   content: '';
+  height: 2px;
   position: absolute;
   width: var(--buffer-content-size);
-  height: 2px;
-  bottom: calc((var(--buffer-cell-size) - var(--buffer-content-size)) / 2);
-  background-color: var(--primary-100);
 }
 
 @keyframes cursor {

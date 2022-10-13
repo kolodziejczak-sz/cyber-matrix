@@ -1,28 +1,27 @@
 .timer {
   display: grid;
-  grid-template-columns: auto 1fr;
   gap: var(--size-200);
+  grid-template-columns: auto 1fr;
   position: relative;
 }
 
 .timer__time {
-  display: flex;
-  justify-content: center;
   align-items: center;
   border: 1px solid currentColor;
+  display: flex;
+  justify-content: center;
+  height: var(--size-700);
   margin-inline-start: auto;
   width: calc(5 * var(--size-400));
-  height: var(--size-700);
 }
 
 .timer__animation {
   animation: timer linear forwards;
   animation-duration: var(--timer-duration);
   animation-play-state: paused;
-
+  background-color: currentColor;
   grid-column: 1 / -1;
   height: var(--size-100);
-  background-color: currentColor;
 }
 
 .timer__animation::before {

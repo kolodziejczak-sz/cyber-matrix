@@ -2,41 +2,47 @@ import './App.css';
 
 import { Game } from '@/components/Game';
 import { Menu } from '@/components/Menu';
-import { Score } from '@/components/Score';
-import { GameEndData } from '@/components/Game/types';
-import { defer } from '@/components/Game/utils/defer';
 
 export const App = () => {
-  let view: HTMLElement;
-
-  const changeView = (element: HTMLElement) => {
-    view.replaceWith(element);
-    view = element;
-  }
-
-  const goToMenu = () => changeView(menu);
-
-  const startGame = () => changeView(<Game onEnd={handleGameEnd} />);
-
-  const handleGameEnd = (data: GameEndData) => {
-    const { reason } = data;
-
-    if (reason === 'exit') return goToMenu();
-    
-    const scoreBoardModal = (
-      <Score
-        gameEndData={data}
-        onMainMenu={goToMenu}
+  const routes = {
+    '#': () => (
+      <Menu onStart={startGame} />
+    ),
+    '#game': () => (
+      <Game
+        onExit={goToMenu}
         onPlayAgain={startGame}
       />
-    );
-
-    defer(() => changeView(scoreBoardModal), 600);
+    ),
   };
 
-  const menu = view = <Menu onStart={startGame} />;
+  const goToMenu = () => goTo('#');
+  const startGame = () => goTo('#game');
 
-  startGame();
+  const goTo = (hash: string) => {
+    if (location.hash === hash) {
+      handleHashChange();
+    } else {
+      location.hash = hash;
+    }
+  };
 
-  return view;
+  const root = <div class="app" />;
+
+  const render = (element: HTMLElement) => {
+    root.replaceChildren(element);
+  };
+
+  const handleHashChange = () => {
+    const hash = location.hash;
+    const route = routes[hash] || routes['#'];
+
+    render(route());
+  };
+
+  window.addEventListener('hashchange', handleHashChange);
+
+  handleHashChange();
+
+  return root;
 }

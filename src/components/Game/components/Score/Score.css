@@ -7,6 +7,7 @@
 
 .score__option {
   background-color: var(--bg-color);
+  cursor: pointer;
 }
 
 .console {
@@ -21,16 +22,16 @@
 }
 
 .console__body {
-  color: var(--gray-200);
+  color: var(--gray-100);
   font-family: 'Courier New', Courier, monospace;
-  padding: var(--size-500);
+  padding: var(--size-300);
   overflow: hidden;
   white-space: nowrap;
 }
 
 .console__line {
-  width: max-content;
   position: relative;
+  width: max-content;
 }
 
 .console__line::before {

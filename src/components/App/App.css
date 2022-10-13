@@ -31,8 +31,27 @@
   background-color: var(--bg-color);
   color: var(--primary-100);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: clamp(1.00rem, calc(0.80rem + 0.98vw), 1.50rem);
   text-transform: uppercase;
+  /** 14px at 375px to 22px at 1140px **/
+  font-size: clamp(0.88rem, calc(0.63rem + 1.05vw), 1.38rem);
+}
+
+.app {
+  margin: auto;
+  max-width: 1600px;
+  min-height: 100%;
+  padding: var(--size-500) var(--size-200);
+}
+
+@media only screen and (min-width: 1140px) {
+  :root {
+    /** 22px at 1140px to 26px at 1920px **/
+    font-size: clamp(1.00rem, calc(0.80rem + 0.98vw), 1.50rem);
+  }
+
+  .app {
+    padding: var(--size-900);
+  }
 }
 
 .cut-bottom-corner,
@@ -67,15 +86,4 @@
 
 .option--secondary {
   --border-color: var(--gray-200);
-}
-
-#root {
-  height: 100%;
-  padding: var(--size-500);
-}
-
-@media only screen and (min-width: 50rem) {
-  #root {
-    padding: var(--size-900) var(--size-900);
-  }
 }

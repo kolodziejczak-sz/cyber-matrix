@@ -125,7 +125,6 @@ const minify = async () => {
       }).join(' ');
 
       if (isLiteral) {
-        console.log({value, nextValue})
         node.raw = '\'' + nextValue + '\'';
       } else {
         node.raw = nextValue;

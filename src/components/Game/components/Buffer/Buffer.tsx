@@ -50,17 +50,6 @@ export const Buffer = () => {
   });
 
   /**
-   * Removes the cursor animation.
-   */
-  const removeCursor = () => {
-    const cell = bufferCells[bufferCursor];
-    if (!cell) return;
-
-    cell.classList.remove(cursorClass);
-  };
-
-
-  /**
    * A cell in the matrix has been selected. Populate the buffer with the selected cell symbol and move the cursor forward.
    */
   const handleMatrixCellSelect = (event: CustomEvent<CellData | null>) => {
@@ -96,6 +85,17 @@ export const Buffer = () => {
     };
   });
 
+  /**
+   * Remove animations.
+   */
+  const cleanUp = () => {
+    const cell = bufferCells[bufferCursor];
+    if (!cell) return;
+
+    cell.classList.remove(cursorClass);
+    cell.classList.remove(highlightClass);
+  };
+
   pushBufferCursor();
 
   const abortController = new AbortController();
@@ -104,7 +104,7 @@ export const Buffer = () => {
   eventBus.addEventListener('cell-highlight', handleMatrixCellHightlight, { signal });
   eventBus.addEventListener('cell-select', handleMatrixCellSelect, { signal });
   eventBus.addEventListener('game-end', () => {
-    removeCursor();
+    cleanUp();
     abortController.abort()
   }, { once: true });
 
