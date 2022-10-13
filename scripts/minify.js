@@ -124,6 +124,10 @@ const minify = async () => {
         return w;
       }).join(' ');
 
+      if (value === nextValue) {
+        return;
+      }
+
       if (isLiteral) {
         node.raw = '\'' + nextValue + '\'';
       } else {
