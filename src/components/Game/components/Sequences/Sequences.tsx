@@ -102,15 +102,15 @@ export const Sequences = ({ className }: Props) => {
       cell.setAttribute('data-column', nextColumn);
     });
 
-    for (let i = 0; i < distance; i++) {
+    for (let i = distance - 1; i >= 0; i--) {
       const emptyCell = (
         <button
           data-row={rowIndex.toString()}
-          data-column="0"
+          data-column={i.toString()}
           data-disabled="true"
         />
       );
-  
+      cells.unshift(emptyCell);
       rows[rowIndex].prepend(emptyCell);
     }
   };
@@ -177,7 +177,7 @@ export const Sequences = ({ className }: Props) => {
     const bufferLastSymbol = event.detail;
     selectedMatrixSymbols.push(bufferLastSymbol);
 
-    const cursorCells = cells.filter(findCell, { column: cursorIndex });
+    const cursorCells = cells.filter(findCell, { column: cursorIndex, disabled: false });
 
     cursorCells.forEach((cursorCell) => {
       const rowIndex = Number(cursorCell.dataset.row);
@@ -191,12 +191,12 @@ export const Sequences = ({ className }: Props) => {
         return finishSequence(rowIndex, true);
       }
 
-      const rowCells = cells.filter(findCell, { row: rowIndex });
-      const cursorOverSequenceIndex = rowCells.indexOf(cursorCell);
-      const prevCells = rowCells.slice(0, cursorOverSequenceIndex);
+      const rowCells = cells.filter(findCell, { row: rowIndex, disabled: false });
+      const cursorCellIndex = rowCells.indexOf(cursorCell);
+      const prevCells = rowCells.slice(0, cursorCellIndex);
 
-      const [lastPrevCell] = prevCells.slice(-1); 
-      const isSelectable = !lastPrevCell ? true : lastPrevCell.classList.contains(selectedClass);
+      const [prevCell] = prevCells.slice(-1); 
+      const isSelectable = !prevCell ? true : prevCell.classList.contains(selectedClass);
       const isRightSymbol = cursorCell.dataset.symbol === bufferLastSymbol;
 
       if (isSelectable && isRightSymbol) {
@@ -204,22 +204,27 @@ export const Sequences = ({ className }: Props) => {
       } else {
         const optionsLeftCount = bufferLength - selectedMatrixSymbols.length;
         const sequenceLength = sequenceSymbols.length;
-        const hasNoSpaceLeft = optionsLeftCount < (sequenceLength - cursorOverSequenceIndex);
+        const hasNoSpaceLeft = optionsLeftCount < (sequenceLength - cursorCellIndex);
 
         if (hasNoSpaceLeft) {
           return finishSequence(rowIndex, false);
         }
 
         /** TODO: check if any next symbol of the current sequence is within the matrix scope  */
+        let pushCount = prevCells.length + 1;
 
-        let pushCount = 1;
+        for (let i = prevCells.length - 1; i >= 0; i--) {
+          const slice = prevCells.slice(0, i + 1);
+          const sliceText = slice.map((c => c.dataset.symbol)).join('');
 
-        prevCells.forEach(prevCell => {
-          if (prevCell.dataset.symbol !== bufferLastSymbol) {
-            prevCell.classList.remove(selectedClass);
-            pushCount += 1;
+          if (bufferText.endsWith(sliceText)) {
+            pushCount = pushCount - slice.length;
+            break;
+          } else {
+            const cell = prevCells[i];
+            cell.classList.remove(selectedClass);
           }
-        });
+        }
 
         const lastRowCell = rowCells[rowCells.length - 1];
         const nextColumnEndIndex = Number(lastRowCell.dataset.column) + pushCount;
