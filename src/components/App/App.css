@@ -50,7 +50,7 @@
   }
 
   .app {
-    padding: var(--size-900);
+    padding: var(--size-500);
   }
 }
 
@@ -79,6 +79,7 @@
 
   border: 2px solid currentColor;
   color: var(--border-color);
+  cursor: pointer;
   padding: var(--size-500);
   text-align: start;
   width: 100%;

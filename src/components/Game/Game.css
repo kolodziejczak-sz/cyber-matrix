@@ -19,7 +19,7 @@
     grid-template:
       'timer buffer-exit'
       'matrix sequences';
-    padding-block-start: var(--size-100);
+    padding-block-start: var(--size-700);
   }
 
   .game__buffer-and-exit {
