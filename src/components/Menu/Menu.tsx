@@ -39,7 +39,7 @@ export const Menu = ({ onStart }: Props) => {
             </ul>
           </div>
           <p>
-            The game ported by snkj.
+            Copyright (c) 2022, snkj.
             Feel free to submit any issue/feature request
             on <a href="https://github.com/kolodziejczak-sz/cyber-matrix/">GitHub &#8599;</a>
           </p>
