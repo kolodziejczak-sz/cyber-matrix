@@ -46,9 +46,9 @@ export const Sequences = ({ className }: Props) => {
   ));
 
   const cursor = (
-    <div class="sequences__cursor" style="--sequences-cursor:1;">
+    <li class="sequences__cursor" style="--sequences-cursor:1;">
       <div />
-    </div>
+    </li>
   );
 
   const list = (
