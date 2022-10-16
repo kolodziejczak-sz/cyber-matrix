@@ -2,6 +2,8 @@
 
 The "Breach protocol" Mini Game from Cyberpunk 2077 ported to web.
 
+[Play the game](https://www.cyber-matrix.app/)
+
 ## How to play
 
 Please read the article [Cyberpunk 2077 guide: Breach Protocol, explained](https://www.polygon.com/cyberpunk-2077-guide-walkthrough/22163900/breach-protocol-encrypted-shard-militech-datashard-access-point-quickhack-buffer#Hxb12y) to understand how the game works and its rules. 
@@ -12,7 +14,7 @@ Game controls:
 
 ## Screenshots
 
-![Screenshot from the game](https://github.com/kolodziejczak-sz/cyber-matrix/blob/master/assets/screenshot.jpeg?raw=true)
+![Screenshot from the game](https://github.com/kolodziejczak-sz/cyber-matrix/blob/master/assets/screenshot.jpeg)
 
 ## Development
 
