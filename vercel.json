@@ -1,0 +1,22 @@
+{
+  "headers": [
+    {
+      "source": "/index.html",
+      "headers" : [
+        {
+          "key" : "Cache-Control",
+          "value" : "max-age:300, private"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers" : [
+        {
+          "key" : "Cache-Control",
+          "value" : "max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}
