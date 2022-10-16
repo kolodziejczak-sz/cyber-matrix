@@ -26,12 +26,13 @@ export const Game = ({ partialGameData, onExit, onPlayAgain }: Props) => {
 
   const endGame = () => {
     eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'exit' }));
+    onExit();
   };
 
   eventBus.addEventListener('game-end', async (event: CustomEvent<string>) => {
     const { detail: reason } = event;
     if (reason === 'exit') {
-      return onExit();
+      return;
     }
 
     const { detail: sequencesData } = await waitForEvent<CustomEvent<boolean[]>>(eventBus, 'sequences-data');
