@@ -21,11 +21,10 @@ export const Score = ({
   const totalPointsText = 'Total Points';
   const retryText = `${totalPoints === 0 ? 'Try' : 'Play'} Again`;
   const reasonText = {
-    timer: 'Breach Time Ended',
-    buffer: 'The Buffer Space Exceeded',
-    sequences: 'Sequences Terminated',
-    exit: 'Escaped'
-  }[reason];
+    'time-out': 'Breach Time Ended',
+    'buffer-ended': 'The Buffer Space Exceeded',
+    'sequences-ended': 'Sequences Terminated',
+  }[reason] || '';
 
   const maxPrefixLengthForDots = Math.max(
     totalPointsText.length,

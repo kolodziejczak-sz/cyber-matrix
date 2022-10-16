@@ -25,13 +25,13 @@ export const Game = ({ partialGameData, onExit, onPlayAgain }: Props) => {
   setContext(gameData);
 
   const endGame = () => {
-    eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'exit' }));
+    eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'quit' }));
     onExit();
   };
 
   eventBus.addEventListener('game-end', async (event: CustomEvent<string>) => {
     const { detail: reason } = event;
-    if (reason === 'exit') {
+    if (reason === 'quit') {
       return;
     }
 

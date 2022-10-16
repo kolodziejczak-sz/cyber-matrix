@@ -136,7 +136,7 @@ export const Sequences = ({ className }: Props) => {
     if (isGameEnd) {
       // Defer the game-end event for the buffer animations.
       defer(() => {
-        eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'sequences' }));
+        eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'sequences-ended' }));
       });
     }
   };

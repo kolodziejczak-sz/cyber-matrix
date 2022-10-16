@@ -38,7 +38,7 @@ export const Buffer = () => {
     if (shouldEndGame) {
       // Defer the game-end event for the buffer animations.
       return defer(() => {
-        eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'buffer' }));
+        eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'buffer-ended' }));
       });
     }
 

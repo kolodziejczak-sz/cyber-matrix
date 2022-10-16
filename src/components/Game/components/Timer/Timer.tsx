@@ -45,7 +45,7 @@ export const Timer = ({ className }: Props) => {
       time.textContent = getTimeText(duration);
 
       if (duration <= 0) {
-        eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'timer' }));
+        eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'time-out' }));
       }
     }, intervalMs);
   };
