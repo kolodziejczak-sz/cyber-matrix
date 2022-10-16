@@ -7,7 +7,6 @@
 
 .score__option {
   background-color: var(--bg-color);
-  cursor: pointer;
 }
 
 .console {
