@@ -24,15 +24,14 @@ export const Game = ({ partialGameData, onExit, onPlayAgain }: Props) => {
   
   setContext(gameData);
 
-  const handleExitGame = () => {
+  const endGame = () => {
     eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'exit' }));
-    onExit();
   };
 
   eventBus.addEventListener('game-end', async (event: CustomEvent<string>) => {
     const { detail: reason } = event;
     if (reason === 'exit') {
-      return;
+      return onExit();
     }
 
     const { detail: sequencesData } = await waitForEvent<CustomEvent<boolean[]>>(eventBus, 'sequences-data');
@@ -62,7 +61,7 @@ export const Game = ({ partialGameData, onExit, onPlayAgain }: Props) => {
       <Timer className="game__timer" />
       <div class="game__buffer-and-exit">
         <Buffer />
-        <Exit onClick={handleExitGame}/>
+        <Exit onClick={endGame}/>
       </div>
       <Sequences className="game__sequences" />
       {codeMatrix}

@@ -23,7 +23,7 @@
 
 .console__body {
   color: var(--gray-100);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: monospace;
   padding: var(--size-300);
   overflow: hidden;
   white-space: nowrap;
