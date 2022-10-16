@@ -12,7 +12,7 @@ export const Menu = ({ onStart }: Props) => {
   return (
     <div class="menu">
         <header class="menu__header">
-          <h1 class="menu__title">Cyber matrix</h1>
+          <h1 class="menu__title">Cyber Matrix</h1>
           <p class="menu__subtitle">The "Breach protocol" Mini Game from Cyberpunk 2077 ported to web</p>
         </header>
         <main class="menu__options">
@@ -39,7 +39,7 @@ export const Menu = ({ onStart }: Props) => {
             </ul>
           </div>
           <p>
-            The game ported by snkj.
+            Copyright (c) 2022, snkj.
             Feel free to submit any issue/feature request
             on <a href="https://github.com/kolodziejczak-sz/cyber-matrix/">GitHub &#8599;</a>
           </p>
