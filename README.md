@@ -14,7 +14,7 @@ Game controls:
 
 ## Screenshots
 
-![Screenshot from the game](https://github.com/kolodziejczak-sz/cyber-matrix/blob/master/assets/screenshot.jpeg)
+![Screenshot from the game](https://github.com/kolodziejczak-sz/cyber-matrix/blob/master/assets/screenshot.jpeg | width=365)
 
 ## Development
 
