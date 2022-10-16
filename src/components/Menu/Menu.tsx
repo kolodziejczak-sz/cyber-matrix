@@ -30,6 +30,20 @@ export const Menu = ({ onStart }: Props) => {
             How to play &#8599;
           </a>
         </main>
+        <footer class="menu__footer">
+          <div class="menu__controls">
+            Game controls
+            <ul>
+              <li>Mouse: hover to select a cell, click to confirm the selection,</li>
+              <li>Mobile: tap to select a cell, double tap to confirm the selection</li>
+            </ul>
+          </div>
+          <p>
+            The game ported by snkj.
+            Feel free to submit any issue/feature request
+            on <a href="https://github.com/kolodziejczak-sz/cyber-matrix/">GitHub &#8599;</a>
+          </p>
+        </footer>
     </div>
   )
 }

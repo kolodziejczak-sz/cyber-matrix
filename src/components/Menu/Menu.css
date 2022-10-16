@@ -1,6 +1,7 @@
 .menu {
   --gap: var(--size-600);
   height: 100%;
+  padding: var(--size-900);
 }
 
 .menu__title {
@@ -11,7 +12,7 @@
 }
 
 .menu__subtitle {
-  color: var(--gray-200);
+  color: var(--gray-100);
   font-size: var(--size-400);
 }
 
@@ -21,8 +22,15 @@
 }
 
 .menu,
-.menu__options {
+.menu__options,
+.menu__footer {
   display: flex;
   flex-direction: column;
   gap: var(--gap);
+}
+
+.menu__footer {
+  color: var(--gray-200);
+  font-size: var(--size-400);
+  text-transform: none;
 }
