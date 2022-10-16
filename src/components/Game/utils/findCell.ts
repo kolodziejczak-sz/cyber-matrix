@@ -1,9 +1,6 @@
-type FindCellQuery = {
-  row?: number,
-  column?: number,
-  symbol?: string,
-  disabled?: boolean;
-}
+import { CellData } from '@/components/Game/types';
+
+type FindCellQuery = Partial<CellData>;
 
 export function findCell (this: FindCellQuery, element: HTMLElement): boolean {
   const {

@@ -1,8 +1,6 @@
-import { GameEndData } from '@/components/Game/types';
+import { GameData, GameEndData } from '@/components/Game/types';
 import { setContext } from '@/components/Game/context';
-import { getSettings } from '@/components/Game/generators/getSettings';
-import { getMatrix } from '@/components/Game/generators/getMatrix';
-import { getSequences } from '@/components/Game/generators/getSequences';
+import { getGameData } from '@/components/Game/generators/getGameData';
 import { waitForEvent } from '@/components/Game/utils/waitForEvent';
 import { defer } from '@/components/Game/utils/defer';
 import { Timer } from '@/components/Game/components/Timer';
@@ -17,20 +15,14 @@ import './Game.css';
 type Props = {
   onExit: () => void;
   onPlayAgain: () => void;
+  partialGameData?: Partial<GameData>;
 };
 
-export const Game = ({ onExit, onPlayAgain }: Props) => {
-  const eventBus = new EventTarget();
-  const settings = getSettings();
-  const matrix = getMatrix(settings.matrixSettings.rowLength); 
-  const sequences = getSequences(matrix, settings);
-
-  setContext({
-    eventBus,
-    matrix,
-    settings,
-    sequences,
-  });
+export const Game = ({ partialGameData, onExit, onPlayAgain }: Props) => {
+  const gameData = getGameData(partialGameData);
+  const { eventBus, sequences } = gameData;
+  
+  setContext(gameData);
 
   const handleExitGame = () => {
     eventBus.dispatchEvent(new CustomEvent('game-end', { detail: 'exit' }));

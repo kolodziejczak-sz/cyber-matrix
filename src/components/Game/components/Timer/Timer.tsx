@@ -7,8 +7,9 @@ type Props = {
 }
 
 export const Timer = ({ className }: Props) => {
-  const { eventBus, settings } = getContext();
-  let { duration } = settings.timerSettings;
+  const { eventBus, timerDuration } = getContext();
+
+  let duration = timerDuration;
 
   const getTimeText = (value: number) => {
     let sec = Math.max(0, Math.round(value / 100) / 10).toString();

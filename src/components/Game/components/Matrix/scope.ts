@@ -14,7 +14,11 @@ type CreateScopeProps = {
   initialScope: Scope,
 }
 
-export const createScope = ({ cells, container, initialScope }: CreateScopeProps) => {
+export const createScope = ({
+  cells,
+  container,
+  initialScope
+}: CreateScopeProps) => {
   let value = initialScope;
 
   const getValue = (): Scope | undefined => {

@@ -1,16 +1,43 @@
-import { Matrix, Sequences, Sequence, GameSettings, Direction, SequenceSettings } from '@/components/Game/types';
+import { Matrix, Sequences, Sequence, Direction, Scope, Symbols } from '@/components/Game/types';
 import { getRandomInteger } from '@/components/Game/generators/getRandomInteger';
-import { getNextDirection } from '@/components/Game/generators/getNextDirection';
+import { getNextDirection } from '@/components/Game/utils/getNextDirection';
 
-export const getSequences = (
-  matrix: Matrix,
-  settings: GameSettings,
-): Sequences => {
+type SequenceSettings = Omit<Sequence, 'symbols'>;
+
+const getSequencesSettings = (
+  sequenceCount: number,
+  bufferLength: number
+): SequenceSettings[] => {
+  return Array.from({ length: sequenceCount }).map((_, index) => {
+    const min = 2;
+    const max = Math.min(
+      Math.max(min + sequenceCount, bufferLength - min),
+      bufferLength
+    );
+
+    const length = getRandomInteger(min, max);
+    const points = ((length - 1) * 100) * (length * 0.25);
+    const name = `MINE_V${index}` 
+
+    return { length, name, points };
+  });
+};
+
+type Props = {
+  matrix: Matrix;
+  bufferLength: number;
+  initialScope: Scope;
+  sequenceCount: number;
+};
+
+export const getSequences = ({
+  matrix,
+  bufferLength,
+  initialScope,
+  sequenceCount,
+}: Props): Sequences => {
   const { rowLength, symbols } = matrix;
-
-  const { scopeSettings: initialScope, sequencesSettings, bufferSettings } = settings;
   const { direction, index } = initialScope;
-  const { length: bufferLength } = bufferSettings;
 
   const getRandomCoord = () => getRandomInteger(0, rowLength - 1);
 
@@ -21,8 +48,8 @@ export const getSequences = (
     return shouldChangeDir ? getNextDirection(initialDir) : initialDir;
   };
 
-  const createSequence = ({ length, points, name }: SequenceSettings) => {
-    const sequenceSymbols: string[] = [];
+  const createSymbolsForSequence = (length: number) => {
+    const sequenceSymbols: Symbols = [];
     const usedIndexes: number[] = [];
     const bufferMaxOffset = bufferLength - length;
   
@@ -44,29 +71,28 @@ export const getSequences = (
       idx = query[dir];
     }
 
-    return {
-      length,
-      name,
-      points,
-      symbols: sequenceSymbols
-    };
+    return sequenceSymbols;
   };
 
-  const sequences = [];
+  const sequencesSettings = getSequencesSettings(sequenceCount, bufferLength);
+  const sequences: Sequences = [];
 
-  const isDuplication = (sequenceToValidate: Sequence) => {
-    return sequences.some((sequence: Sequence) => (
-      sequence.symbols.join('') === sequenceToValidate.symbols.join('')
+  const isDuplication = (symbolsToValidate: Symbols) => {
+    return sequences.some((sequence) => (
+      sequence.symbols.join('') === symbolsToValidate.join('')
     ));
   };
 
-  sequencesSettings.forEach((sequenceSetting: SequenceSettings) => {
-    let sequence: Sequence;
+  sequencesSettings.forEach((sequenceSettings: SequenceSettings) => {
+    let sequenceSymbols: Symbols;
     do {
-      sequence = createSequence(sequenceSetting)
-    } while (isDuplication(sequence))
+      sequenceSymbols = createSymbolsForSequence(sequenceSettings.length)
+    } while (isDuplication(sequenceSymbols))
 
-    sequences.push(sequence);
+    sequences.push({
+      ...sequenceSettings,
+      symbols: sequenceSymbols
+    });
   });
 
   return sequences;

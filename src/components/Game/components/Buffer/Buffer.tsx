@@ -1,17 +1,16 @@
+import { CellData } from '@/components/Game/types';
 import { getContext } from '@/components/Game/context';
 import { classNameEffect } from '@/components/Game/utils/classNameEffect';
 import { defer } from '@/components/Game/utils/defer';
 import { effect } from '@/components/Game/utils/effect';
-import { CellData } from '@/components/Game/types';
 
 import './Buffer.css';
 
 
 export const Buffer = () => {
-  const { eventBus, settings } = getContext();
-  const { bufferSettings: { length } } = settings;
+  const { eventBus, bufferLength } = getContext();
 
-  const bufferCells = Array.from({ length }).map(() => {
+  const bufferCells = Array.from({ length: bufferLength }).map(() => {
     return <span class="buffer__cell" />
   });
 
@@ -34,7 +33,7 @@ export const Buffer = () => {
    */
   const pushBufferCursor = effect(() => {
     const nextCursor = bufferCursor + 1;
-    const shouldEndGame = nextCursor === length;
+    const shouldEndGame = nextCursor === bufferLength;
 
     if (shouldEndGame) {
       // Defer the game-end event for the buffer animations.

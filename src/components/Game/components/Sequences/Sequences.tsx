@@ -12,9 +12,7 @@ type Props = {
 }
 
 export const Sequences = ({ className }: Props) => {
-  const { sequences, eventBus, settings } = getContext();
-  const { bufferSettings, controllerSettings } = settings;
-  const bufferLength = bufferSettings.length;
+  const { bufferLength, controller, eventBus, sequences } = getContext();
   const longestSequence = Math.max(
     bufferLength, ...sequences.map(({ length }) => length)
   );
@@ -210,7 +208,7 @@ export const Sequences = ({ className }: Props) => {
           return finishSequence(rowIndex, false);
         }
 
-        /** TODO: check if any next symbol of the current sequence is within the matrix scope  */
+        /** EXTRA: check if any next symbol of the current sequence is within the matrix scope  */
         let pushCount = prevCells.length + 1;
 
         for (let i = prevCells.length - 1; i >= 0; i--) {
@@ -244,7 +242,7 @@ export const Sequences = ({ className }: Props) => {
   const abortController = new AbortController();
   const signal = abortController.signal;
 
-  if (controllerSettings === 'touch') {
+  if (controller === 'touch') {
     list.addEventListener('focusin', handleSymbolQuery, { signal });
     list.addEventListener('focusout', handleSymbolQuery, { signal });
   } else {

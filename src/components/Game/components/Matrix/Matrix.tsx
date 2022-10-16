@@ -1,9 +1,9 @@
+import { getContext } from '@/components/Game/context';
 import { effect } from '@/components/Game/utils/effect';
 import { classNameEffect } from '@/components/Game/utils/classNameEffect';
-import { getNextDirection } from '@/components/Game/generators/getNextDirection';
-import { getContext } from '@/components/Game/context';
-import { createScope } from '@/components/Game/components/Matrix/scope';
+import { getNextDirection } from '@/components/Game/utils/getNextDirection';
 import { findCell } from '@/components/Game/utils/findCell';
+import { createScope } from '@/components/Game/components/Matrix/scope';
 
 import './Matrix.css';
 
@@ -12,7 +12,7 @@ type Props = {
 }
 
 export const Matrix = ({ className }: Props) => {
-  const { eventBus, matrix, settings: { scopeSettings, controllerSettings } } = getContext();
+  const { eventBus, matrix, initialScope, controller } = getContext();
   const { rowLength, symbols } = matrix;
 
   const cells = symbols.map((symbol, index) => {
@@ -53,7 +53,7 @@ export const Matrix = ({ className }: Props) => {
   const scope = createScope({
     cells,
     container: cellsContainer,
-    initialScope: scopeSettings
+    initialScope
   });
 
   /**
@@ -132,7 +132,7 @@ export const Matrix = ({ className }: Props) => {
   const abortController = new AbortController();
   const signal = abortController.signal;
 
-  if (controllerSettings === 'touch') {
+  if (controller === 'touch') {
     cellsContainer.addEventListener('focusin', handleHover, { signal });
     cellsContainer.addEventListener('focusout', handleHover, { signal });
     cellsContainer.addEventListener('dblclick', handleSelect, { signal });

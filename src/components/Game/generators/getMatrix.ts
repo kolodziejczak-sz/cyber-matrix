@@ -1,8 +1,8 @@
 import { getRandomInteger } from '@/components/Game/generators/getRandomInteger';
-import { Matrix } from '@/components/Game/types';
+import { Matrix, Symbol } from '@/components/Game/types';
 
 const getUniqueSymbols = (symbolCount: number) => {
-  const symbols = new Set<string>();
+  const symbols = new Set<Symbol>();
 
   while (symbols.size !== symbolCount) {
     const symbol = getRandomInteger(160, 255).toString(16);
