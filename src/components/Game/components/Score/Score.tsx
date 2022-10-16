@@ -18,12 +18,12 @@ export const Score = ({
     return sum + (succeed ? points : 0);
   }, 0);
 
-  const totalPointsText = 'Total points';
-  const retryText = `${totalPoints === 0 ? 'Try' : 'Play'} again`;
+  const totalPointsText = 'Total Points';
+  const retryText = `${totalPoints === 0 ? 'Try' : 'Play'} Again`;
   const reasonText = {
-    timer: 'Breach time ended',
-    buffer: 'The buffer space exceeded',
-    sequences: 'Sequences terminated',
+    timer: 'Breach Time Ended',
+    buffer: 'The Buffer Space Exceeded',
+    sequences: 'Sequences Terminated',
     exit: 'Escaped'
   }[reason];
 
@@ -80,7 +80,7 @@ export const Score = ({
           {retryText}
         </button>
         <button class="score__option option option--secondary cut-bottom-corner" onclick={onMainMenu}>
-          Main menu
+          Main Menu
         </button>
       </div>
     </div>
