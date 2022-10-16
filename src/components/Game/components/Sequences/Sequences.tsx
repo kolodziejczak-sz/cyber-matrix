@@ -37,7 +37,7 @@ export const Sequences = ({ className }: Props) => {
         return cell;
       })}
       <div class="sequences__details">
-        <span class="sequences__name">{name}</span>
+        <span>{name}</span>
         <span class="sequences__value">
           {points}points
         </span>

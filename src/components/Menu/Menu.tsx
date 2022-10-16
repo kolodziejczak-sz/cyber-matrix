@@ -11,7 +11,7 @@ export const Menu = ({ onStart }: Props) => {
 
   return (
     <div class="menu">
-        <header class="menu__header">
+        <header>
           <h1 class="menu__title">Cyber Matrix</h1>
           <p class="menu__subtitle">The "Breach protocol" Mini Game from Cyberpunk 2077 ported to web</p>
         </header>
@@ -31,13 +31,13 @@ export const Menu = ({ onStart }: Props) => {
           </a>
         </main>
         <footer class="menu__footer">
-          <div class="menu__controls">
+          <p>
             Game controls
             <ul>
               <li>Desktop: hover the cursor to select a cell, click to confirm the selection,</li>
               <li>Mobile: tap to select a cell, double tap to confirm the selection</li>
             </ul>
-          </div>
+          </p>
           <p>
             Copyright (c) 2022, snkj.
             Feel free to submit any issue/feature request

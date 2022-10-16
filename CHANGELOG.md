@@ -2,8 +2,9 @@
 
 ## vNext
 
-- Fixed the game end message
-- Fixed a game controls description
+- Fix the game end message
+- Fix the game controls description
+- Remove unused css classes
 
 
 ## 1.0.0
