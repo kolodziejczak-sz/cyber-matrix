@@ -34,7 +34,7 @@ export const Menu = ({ onStart }: Props) => {
           <div class="menu__controls">
             Game controls
             <ul>
-              <li>Mouse: hover to select a cell, click to confirm the selection,</li>
+              <li>Desktop: hover the cursor to select a cell, click to confirm the selection,</li>
               <li>Mobile: tap to select a cell, double tap to confirm the selection</li>
             </ul>
           </div>

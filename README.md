@@ -9,7 +9,7 @@ The "Breach protocol" Mini Game from Cyberpunk 2077 ported to web.
 Please read the article [Cyberpunk 2077 guide: Breach Protocol, explained](https://www.polygon.com/cyberpunk-2077-guide-walkthrough/22163900/breach-protocol-encrypted-shard-militech-datashard-access-point-quickhack-buffer#Hxb12y) to understand how the game works and its rules. 
 
 Game controls:
-- Mouse: hover to select a cell, click to confirm the selection,
+- Desktop: hover the cursor to select a cell, click to confirm the selection,
 - Mobile: tap to select a cell, double tap to confirm the selection.
 
 ## Screenshots
