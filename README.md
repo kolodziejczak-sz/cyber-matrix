@@ -12,6 +12,8 @@ Game controls:
 
 ## Screenshots
 
+![Screenshot from the game](https://github.com/kolodziejczak-sz/cyber-matrix/blob/master/assets/screenshot.jpeg?raw=true)
+
 ## Development
 
 Feel free to submit any bug or feature request regarding the game. To do so, create a new issue in the repository.
