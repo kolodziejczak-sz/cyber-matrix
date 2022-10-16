@@ -1,6 +1,6 @@
 {
   "name": "cyber-matrix",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The \"Breach protocol\" Mini Game from Cyberpunk 2077 ported to web",
   "main": "index.js",
   "scripts": {

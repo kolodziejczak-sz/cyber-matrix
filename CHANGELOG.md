@@ -1,6 +1,6 @@
 # cyber-matrix
 
-## vNext
+## 1.1.0
 
 - Fix the game end message
 - Fix the game controls description
